@@ -9,7 +9,8 @@
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/todoix</property>
         <property name="hibernate.connection.username">alexander</property>
         <property name="hibernate.connection.password">fghtkm</property>
-        <property name="hibernate.connection.pool_size">1</property>
+        <property name="hibernate.connection.pool_size">100</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
+        <mapping class="ru.link.todoix.List.ListEntity"/>
     </session-factory>
 </hibernate-configuration>

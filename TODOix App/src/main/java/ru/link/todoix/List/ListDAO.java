@@ -2,25 +2,25 @@ package ru.link.todoix.List;
 
 import org.hibernate.*;
 import org.springframework.stereotype.Service;
-import ru.link.todoix.HibernateSessionUtil;
+import ru.link.todoix.HibernateSessionFactory;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @Transactional
-public class ListDAO {
+public class ListDAO<ListEntity>{
 
-    public void create(ListItem listItem){
-        Session session = HibernateSessionUtil.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        session.save(listItem);
-        transaction.commit();
+    public void create(ListEntity listEntity){
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.save(listEntity);
+        session.getTransaction().commit();
         session.close();
     }
 
-    public List<ListItem> getAll(){
-        List<ListItem> items = HibernateSessionUtil.getSessionFactory().openSession().createQuery("FROM ListItem ").list();
+    public List<ListEntity> getAll(){
+        List<ListEntity> items = HibernateSessionFactory.getSessionFactory().openSession().createQuery("FROM ListEntity ").list();
         return items;
     }
 
