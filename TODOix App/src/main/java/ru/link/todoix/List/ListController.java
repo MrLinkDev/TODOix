@@ -3,6 +3,7 @@ package ru.link.todoix.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import ru.link.todoix.Case.CaseRepository;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -14,6 +15,9 @@ public class ListController {
     @Autowired
     private ListRepository listRepository;
 
+    @Autowired
+    private CaseRepository caseRepository;
+
     @RequestMapping(value = "/list/create", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void createList(@RequestParam String name){
@@ -23,10 +27,10 @@ public class ListController {
 
     @RequestMapping(value = "/list/{list_id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ListEntity getList(@PathVariable("list_id") final UUID id){
-        //ListEntity out = listRepository.findById(id);
-        //if (out == null) return "List with this UUID does not exist!";
-        return listRepository.findById(id);
+    public ListPostModel getList(@PathVariable("list_id") final UUID id){
+        ListPostModel out = new ListPostModel(listRepository.findById(id));
+        out.setCases(caseRepository.findByListId(id));
+        return out;
     }
 
     @RequestMapping(value = "/list/{list_id}/modify", method = RequestMethod.PUT)

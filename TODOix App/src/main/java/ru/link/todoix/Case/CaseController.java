@@ -57,4 +57,5 @@ public class CaseController {
     public List<CaseEntity> getAll(){
         return caseRepository.findAll();
     }
+
 }

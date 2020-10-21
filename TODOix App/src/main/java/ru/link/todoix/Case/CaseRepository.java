@@ -5,10 +5,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.UUID;
+import java.util.*;
 
 public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
-    String findQuery = "SELECT caseEntity FROM CaseEntity caseEntity WHERE caseEntity.caseId = :id";
+    String findByIdQuery = "SELECT caseEntity FROM CaseEntity caseEntity WHERE caseEntity.caseId = :id";
+    String findByListIdQuery = "SELECT caseEntity FROM CaseEntity caseEntity WHERE caseEntity.listId = :id";
     String updateQuery = "UPDATE CaseEntity caseEntity SET " +
             "caseEntity.name=:name, " +
             "caseEntity.description=:description, " +
@@ -22,8 +23,11 @@ public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
             "WHERE caseEntity.caseId = :id";
     String deleteQuery = "DELETE FROM CaseEntity caseEntity WHERE caseEntity.caseId = :id";
 
-    @Query(findQuery)
+    @Query(findByIdQuery)
     CaseEntity findById(@Param("id") UUID id);
+
+    @Query(findByListIdQuery)
+    List<CaseEntity> findByListId(@Param("id") UUID id);
 
     @Query(updateQuery)
     @Modifying
