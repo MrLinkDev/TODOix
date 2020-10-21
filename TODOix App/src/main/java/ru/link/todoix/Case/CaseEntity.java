@@ -2,13 +2,13 @@ package ru.link.todoix.Case;
 
 import javax.persistence.*;
 import java.sql.*;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "cases", schema = "todoix_app", catalog = "todoix")
 public class CaseEntity {
-    private long caseId;
-    private long listId;
+    private UUID caseId;
+    private UUID listId;
 
     private String name;
     private String description;
@@ -22,34 +22,34 @@ public class CaseEntity {
 
     public CaseEntity(){}
 
-    public CaseEntity(String name, String description, short urgency){
+    public CaseEntity(UUID listId, String name, String description, short urgency){
+        this.listId = listId;
         this.name = name;
         this.description = description;
         this.urgency = urgency;
 
+        caseId = UUID.randomUUID();
         finished = false;
-
         createDate = modifyDate = new Timestamp(System.currentTimeMillis());
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "case_id")
-    public long getCaseId() {
+    @Column(name = "_id")
+    public UUID getCaseId() {
         return caseId;
     }
 
-    public void setCaseId(long caseId) {
+    public void setCaseId(UUID caseId) {
         this.caseId = caseId;
     }
 
     @Basic
     @Column(name = "list_id")
-    public long getListId() {
+    public UUID getListId() {
         return listId;
     }
 
-    public void setListId(long listId) {
+    public void setListId(UUID listId) {
         this.listId = listId;
     }
 
@@ -59,7 +59,7 @@ public class CaseEntity {
         return name;
     }
 
-    public void setName(String caseName) {
+    public void setName(String name) {
         this.name = name;
     }
 

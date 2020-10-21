@@ -1,16 +1,17 @@
 package ru.link.todoix.List;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.id.UUIDGenerationStrategy;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "lists", schema = "todoix_app", catalog = "todoix")
 public class ListEntity {
 
-    private long listId;
+    private UUID listId;
     private String name;
     private Timestamp createDate;
     private Timestamp modifyDate;
@@ -19,17 +20,18 @@ public class ListEntity {
 
     public ListEntity(String name){
         this.name = name;
+
+        listId = UUID.randomUUID();
         createDate = modifyDate = new Timestamp(System.currentTimeMillis());
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "list_id")
-    public Long getListId() {
+    @Column(name = "_id")
+    public UUID getListId() {
         return listId;
     }
 
-    public void setListId(long listId) {
+    public void setListId(UUID listId) {
         this.listId = listId;
     }
 

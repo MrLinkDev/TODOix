@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @RestController
@@ -13,38 +14,34 @@ public class ListController {
     @Autowired
     private ListRepository listRepository;
 
-    @RequestMapping(value = "/list/create", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/list/create", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public List<ListEntity> createList(@RequestParam String name){
+    public void createList(@RequestParam String name){
         ListEntity listEntity = new ListEntity(name);
         listRepository.save(listEntity);
-
-        return listRepository.findAll();
     }
 
     @RequestMapping(value = "/list/{list_id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Optional<ListEntity> getList(@PathVariable("list_id") final Long id){
+    public ListEntity getList(@PathVariable("list_id") final UUID id){
+        //ListEntity out = listRepository.findById(id);
+        //if (out == null) return "List with this UUID does not exist!";
         return listRepository.findById(id);
     }
 
-    @RequestMapping(value = "/list/{list_id}/modify", method = {RequestMethod.PUT, RequestMethod.GET})
+    @RequestMapping(value = "/list/{list_id}/modify", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public ListEntity modifyList(@PathVariable("list_id") final long id, @RequestParam(value = "name") String name){
-        ListEntity listEntity = listRepository.findById(id);
-        listEntity.setName(name);
-        listRepository.save(listEntity);
-        return listRepository.findById(id);
+    public void modifyList(@PathVariable("list_id") final UUID id, @RequestParam String name){
+        listRepository.updateById(id, name, new Timestamp(System.currentTimeMillis()));
     }
 
-    @RequestMapping(value = "/list/{list_id}/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
+    @RequestMapping(value = "/list/{list_id}/delete", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public String deleteList(@PathVariable("list_id") final long id){
+    public void deleteList(@PathVariable("list_id") final UUID id){
         listRepository.deleteById(id);
-        return "DELETED";
     }
 
-    @RequestMapping(value = "/list/all", method = {RequestMethod.GET}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/list/all", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<ListEntity> getAll(){
         return listRepository.findAll();

@@ -3,48 +3,56 @@ package ru.link.todoix.Case;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import ru.link.todoix.List.*;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @RestController
-@RequestMapping("/todoix/list")
+@RequestMapping("/todoix")
 public class CaseController {
     @Autowired
     private CaseRepository caseRepository;
 
-    @RequestMapping(value = "/{list_id}/case/create", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/case/create", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public List<CaseEntity> createList(@RequestParam String name,@RequestParam  String description,@RequestParam  short urgency){
-        CaseEntity caseEntity = new CaseEntity(name, description, urgency);
+    public void createList(@RequestParam UUID listId, @RequestParam String name, @RequestParam String description,@RequestParam  short urgency){
+        CaseEntity caseEntity = new CaseEntity(listId, name, description, urgency);
         caseRepository.save(caseEntity);
-
-        return caseRepository.findAll();
     }
 
-    @RequestMapping(value = "/list/{list_id}/case/{case_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/case/{case_id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Optional<CaseEntity> getList(@PathVariable("list_id") final Long id){
+    public CaseEntity getCase(@PathVariable("case_id") final UUID id){
         return caseRepository.findById(id);
     }
 
-    @RequestMapping(value = "list/{list_id}/case/{case_id}/modify", method = {RequestMethod.PUT, RequestMethod.GET})
+    @RequestMapping(value = "/case/{case_id}/modify", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public CaseEntity modifyList(@PathVariable("list_id") final long id, @RequestParam(value = "name") String name){
+    public void modifyCase(@PathVariable("case_id") final UUID id, @RequestParam(required = false) String name, @RequestParam(required = false) String description, @RequestParam(required = false) Short urgency, @RequestParam(required = false) Boolean finished){
         CaseEntity caseEntity = caseRepository.findById(id);
-        caseEntity.setName(name);
-        caseRepository.save(caseEntity);
-        return caseRepository.findById(id);
+        caseRepository.updateById(
+                id,
+                name == null ? caseEntity.getName() : name,
+                description == null ? caseEntity.getDescription() : description,
+                urgency == null ? caseEntity.getUrgency() : urgency,
+                finished == null ? caseEntity.isFinished() : finished,
+                new Timestamp(System.currentTimeMillis())
+        );
     }
 
-    @RequestMapping(value = "/list/{list_id}/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
+    @RequestMapping(value = "/case/{case_id}/mark-down", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public void modifyCase(@PathVariable("case_id") final UUID id){
+        caseRepository.markDownById(id, new Timestamp(System.currentTimeMillis()));
+    }
+
+    @RequestMapping(value = "/case/{case_id}/delete", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public String deleteList(@PathVariable("list_id") final long id){
+    public void deleteCase(@PathVariable("case_id") final UUID id){
         caseRepository.deleteById(id);
-        return "DELETED";
     }
 
-    @RequestMapping(value = "/list/all", method = {RequestMethod.GET}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/case/all", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<CaseEntity> getAll(){
         return caseRepository.findAll();
