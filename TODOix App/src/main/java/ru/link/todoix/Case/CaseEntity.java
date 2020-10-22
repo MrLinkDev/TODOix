@@ -9,7 +9,7 @@ import java.util.*;
  */
 @javax.persistence.Entity
 @Table(name = "cases", schema = "todoix_app", catalog = "todoix")
-public class Entity {
+public class CaseEntity {
     private UUID caseId;
     private UUID listId;
 
@@ -26,7 +26,7 @@ public class Entity {
     /**
      * Пустой конструктор
      */
-    public Entity(){}
+    public CaseEntity(){}
 
     /**
      * Конструктор для создания дела
@@ -35,7 +35,7 @@ public class Entity {
      * @param description - описание дела
      * @param urgency - срочность дела
      */
-    public Entity(UUID listId, String name, String description, short urgency){
+    public CaseEntity(UUID listId, String name, String description, short urgency){
         this.listId = listId;
         this.name = name;
         this.description = description;
@@ -194,7 +194,7 @@ public class Entity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Entity that = (Entity)o;
+        CaseEntity that = (CaseEntity)o;
         return caseId == that.caseId &&
                 listId == that.listId &&
                 urgency == that.urgency &&

@@ -6,7 +6,7 @@ public class ReviewPostModel {
     private int finishedListCount = 0;
     private int openedListCount = 0;
 
-    private List<Entity> lists;
+    private List<ListEntity> lists;
 
     public int getFinishedListCount() {
         return finishedListCount;
@@ -24,11 +24,11 @@ public class ReviewPostModel {
         this.openedListCount = openedListCount;
     }
 
-    public List<Entity> getLists() {
+    public List<ListEntity> getLists() {
         return lists;
     }
 
-    public void setLists(List<Entity> lists) {
+    public void setLists(List<ListEntity> lists) {
         this.lists = lists;
     }
 }

@@ -1,8 +1,11 @@
 package ru.link.todoix.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import ru.link.todoix.Case.*;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -13,13 +16,13 @@ import java.util.*;
 @RestController
 @RequestMapping("/todoix")
 
-public class Controller {
+public class ListController {
 
     @Autowired
-    private Repository listRepository;
+    private ListRepository listRepository;
 
     @Autowired
-    private ru.link.todoix.Case.Repository caseRepository;
+    private CaseRepository caseRepository;
 
     /**
      * Создание списка дел
@@ -28,7 +31,7 @@ public class Controller {
     @RequestMapping(value = "/list/create", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void createList(@RequestParam String name){
-        Entity listEntity = new Entity(name);
+        ListEntity listEntity = new ListEntity(name);
         listRepository.save(listEntity);
     }
 
@@ -73,35 +76,48 @@ public class Controller {
      */
     @RequestMapping(value = "/list/all", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Entity> getAll(){
+    public List<ListEntity> getAll(){
         return listRepository.findAll();
     }
 
     /**
+     * Получение списка списков дел
+     * @param p - страница, которую нужно получить
+     * @param size - размер страницы (количество элементов на ней)
+     * @param sortBy - параметр сортировки (name, listId, createDate, modifyDate)
+     * @return ReviewPostModel - список списков дел с количеством завершённых и открытых списков дел
+     */
     @RequestMapping(value = "/review", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Page<ListPostModel> getReview(){
-        ReviewPostModel out = new ReviewPostModel();
-        List<ListEntity> lists = listRepository.findAll();
-        List<ListPostModel> temp = new ArrayList<>();
+    public ReviewPostModel getReview(@RequestParam(required = false) Integer p, @RequestParam(required = false) Integer size, @RequestParam(required = false) String sortBy){
+        Pageable pageable = PageRequest.of(
+                p == null ? 0 : p - 1,
+                size == null ? 10 : size > 100 ? 10 : size,
+                Sort.by(sortBy == null ? "name" : sortBy)
+        );
+        Page<ListEntity> page = listRepository.findAll(pageable);
 
-        for (int i = 0; i < lists.size(); ++i){
-            temp.add(new ListPostModel(lists.get(i)));
+        int finishedListCount = 0;
+        int openedListCount = 0;
+
+        for (ListEntity list : page.getContent()){
+            boolean finished = true;
+            List<CaseEntity> cases = caseRepository.findByListId(list.getListId());
+            for (CaseEntity caseItem : cases){
+                if (!caseItem.isFinished()) {
+                    finished = false;
+                    break;
+                }
+            }
+            if (finished) ++finishedListCount;
+            else ++openedListCount;
         }
 
-        Pageable pageable = PageRequest.of(0, 2);
-        final Page<ListPostModel> page = new PageImpl<>(temp, pageable, temp.size());
+        ReviewPostModel review = new ReviewPostModel();
+        review.setLists(page.getContent());
+        review.setOpenedListCount(openedListCount);
+        review.setFinishedListCount(finishedListCount);
 
-        int finished = 0, opened = 0;
-        for (ListPostModel l : temp){
-            l.setCases(caseRepository.findByListId(l.getId()));
-            if (l.getOpenedCount() == 0) ++finished;
-            else ++opened;
-        }
-        out.setLists(lists);
-        out.setFinishedListCount(finished);
-        out.setOpenedListCount(opened);
-
-        return page;
-    }*/
+        return review;
+    }
 }

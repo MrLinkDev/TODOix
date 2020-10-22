@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * Набор методов для работы с таблицей списков дел
  */
-public interface Repository extends JpaRepository<Entity, Long> {
+public interface ListRepository extends JpaRepository<ListEntity, Long> {
     String findQuery = "SELECT list FROM ListEntity list WHERE list.listId = :id";
     String updateQuery = "UPDATE ListEntity list SET list.name=:name, list.modifyDate=:modify_date  WHERE list.listId = :id";
     String deleteQuery = "DELETE FROM ListEntity list WHERE list.listId = :id";
@@ -21,7 +21,7 @@ public interface Repository extends JpaRepository<Entity, Long> {
      * @return ListEntity - сущность списка дел
      */
     @Query(findQuery)
-    Entity findById(@Param("id") UUID id);
+    ListEntity findById(@Param("id") UUID id);
 
     /**
      * Обновление записи о списке дел по его UUID

@@ -1,5 +1,7 @@
 package ru.link.todoix.List;
 
+import ru.link.todoix.Case.CaseEntity;
+
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -17,7 +19,7 @@ public class ListPostModel{
     private int finishedCount = 0;
     private int openedCount = 0;
 
-    private List<ru.link.todoix.Case.Entity> cases;
+    private List<CaseEntity> cases;
 
     /**
      * Пустой конструктор
@@ -28,7 +30,7 @@ public class ListPostModel{
      * Конструктор создания возвращаемой модели
      * @param listEntity - сущность списка дел
      */
-    public ListPostModel(Entity listEntity){
+    public ListPostModel(ListEntity listEntity){
         id = listEntity.getListId();
         name = listEntity.getName();
         createDate = listEntity.getCreateDate();
@@ -103,7 +105,7 @@ public class ListPostModel{
      * Получение дел, привязанных к списку
      * @return cases - дела, привязанные к списку
      */
-    public List<ru.link.todoix.Case.Entity> getCases(){
+    public List<CaseEntity> getCases(){
         return cases;
     }
 
@@ -112,10 +114,10 @@ public class ListPostModel{
      * подсчёт завершённых и открытых дел
      * @param cases - дела, привязанные к списку
      */
-    public void setCases(List<ru.link.todoix.Case.Entity> cases){
+    public void setCases(List<CaseEntity> cases){
         this.cases = cases;
 
-        for(ru.link.todoix.Case.Entity c: cases)
+        for(CaseEntity c: cases)
             if (c.isFinished()) ++finishedCount;
             else ++openedCount;
     }

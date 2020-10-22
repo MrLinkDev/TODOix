@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Набор методов для работы с таблицей дел
  */
-public interface Repository extends JpaRepository<Entity, Long> {
+public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
     String findByIdQuery = "SELECT caseEntity FROM CaseEntity caseEntity WHERE caseEntity.caseId = :id";
     String findByListIdQuery = "SELECT caseEntity FROM CaseEntity caseEntity WHERE caseEntity.listId = :id";
     String updateQuery = "UPDATE CaseEntity caseEntity SET " +
@@ -32,7 +32,7 @@ public interface Repository extends JpaRepository<Entity, Long> {
      * @return CaseEntity - сущность дела
      */
     @Query(findByIdQuery)
-    Entity findById(@Param("id") UUID id);
+    CaseEntity findById(@Param("id") UUID id);
 
     /**
      * Поиск дел по UUID списка дел, к которому привязаны дела
@@ -40,7 +40,7 @@ public interface Repository extends JpaRepository<Entity, Long> {
      * @return List<CaseEntity>
      */
     @Query(findByListIdQuery)
-    List<Entity> findByListId(@Param("id") UUID id);
+    List<CaseEntity> findByListId(@Param("id") UUID id);
 
     /**
      * Обновление записи о деле по его UUID

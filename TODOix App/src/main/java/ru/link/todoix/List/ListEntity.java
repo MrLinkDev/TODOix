@@ -9,7 +9,7 @@ import java.util.*;
  */
 @javax.persistence.Entity
 @Table(name = "lists", schema = "todoix_app", catalog = "todoix")
-public class Entity {
+public class ListEntity {
     private UUID listId;
 
     private String name;
@@ -20,13 +20,13 @@ public class Entity {
     /**
      * Пустой конструктор для создания списка дел
      */
-    public Entity(){}
+    public ListEntity(){}
 
     /**
      * Конструктор для создания списка дел
      * @param name - имя списка дел
      */
-    public Entity(String name){
+    public ListEntity(String name){
         this.name = name;
 
         listId = UUID.randomUUID();
@@ -109,7 +109,7 @@ public class Entity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Entity that = (Entity)o;
+        ListEntity that = (ListEntity)o;
         return listId == that.listId &&
                 Objects.equals(name, that.name);
     }

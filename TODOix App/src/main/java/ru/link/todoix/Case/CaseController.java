@@ -12,9 +12,9 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/todoix")
-public class Controller {
+public class CaseController {
     @Autowired
-    private Repository caseRepository;
+    private CaseRepository caseRepository;
 
     /**
      * Создание дела
@@ -26,7 +26,7 @@ public class Controller {
     @RequestMapping(value = "/case/create", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void createList(@RequestParam UUID listId, @RequestParam String name, @RequestParam String description,@RequestParam  short urgency){
-        Entity caseEntity = new Entity(listId, name, description, urgency);
+        CaseEntity caseEntity = new CaseEntity(listId, name, description, urgency);
         caseRepository.save(caseEntity);
     }
 
@@ -37,7 +37,7 @@ public class Controller {
      */
     @RequestMapping(value = "/case/{case_id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Entity getCase(@PathVariable("case_id") final UUID id){
+    public CaseEntity getCase(@PathVariable("case_id") final UUID id){
         return caseRepository.findById(id);
     }
 
@@ -52,7 +52,7 @@ public class Controller {
     @RequestMapping(value = "/case/{case_id}/modify", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void modifyCase(@PathVariable("case_id") final UUID id, @RequestParam(required = false) String name, @RequestParam(required = false) String description, @RequestParam(required = false) Short urgency, @RequestParam(required = false) Boolean finished){
-        Entity caseEntity = caseRepository.findById(id);
+        CaseEntity caseEntity = caseRepository.findById(id);
         caseRepository.updateById(
                 id,
                 name == null ? caseEntity.getName() : name,
@@ -89,7 +89,7 @@ public class Controller {
      */
     @RequestMapping(value = "/case/all", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Entity> getAll(){
+    public List<CaseEntity> getAll(){
         return caseRepository.findAll();
     }
 
