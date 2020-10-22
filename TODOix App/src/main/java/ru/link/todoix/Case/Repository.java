@@ -7,7 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.*;
 
-public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
+/**
+ * Набор методов для работы с таблицей дел
+ */
+public interface Repository extends JpaRepository<Entity, Long> {
     String findByIdQuery = "SELECT caseEntity FROM CaseEntity caseEntity WHERE caseEntity.caseId = :id";
     String findByListIdQuery = "SELECT caseEntity FROM CaseEntity caseEntity WHERE caseEntity.listId = :id";
     String updateQuery = "UPDATE CaseEntity caseEntity SET " +
@@ -23,12 +26,31 @@ public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
             "WHERE caseEntity.caseId = :id";
     String deleteQuery = "DELETE FROM CaseEntity caseEntity WHERE caseEntity.caseId = :id";
 
+    /**
+     * Поиск дела по его UUID
+     * @param id - UUID дела
+     * @return CaseEntity - сущность дела
+     */
     @Query(findByIdQuery)
-    CaseEntity findById(@Param("id") UUID id);
+    Entity findById(@Param("id") UUID id);
 
+    /**
+     * Поиск дел по UUID списка дел, к которому привязаны дела
+     * @param id - UUID списка дел
+     * @return List<CaseEntity>
+     */
     @Query(findByListIdQuery)
-    List<CaseEntity> findByListId(@Param("id") UUID id);
+    List<Entity> findByListId(@Param("id") UUID id);
 
+    /**
+     * Обновление записи о деле по его UUID
+     * @param id - UUID дела
+     * @param name - имя дела
+     * @param description - краткое описание дела
+     * @param urgency - срочность дела (1-5)
+     * @param finished - статус дела (завершено или нет)
+     * @param modifyDate - дата изменения дела
+     */
     @Query(updateQuery)
     @Modifying
     @Transactional
@@ -40,6 +62,11 @@ public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
             @Param("finished") boolean finished,
             @Param("modify_date") Timestamp modifyDate);
 
+    /**
+     * Присвоение делу статуса завершённого
+     * @param id - UUID дела
+     * @param modifyDate - дата изменения записи о деле
+     */
     @Query(markDownQuery)
     @Modifying
     @Transactional
@@ -47,6 +74,10 @@ public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
             @Param("id") UUID id,
             @Param("modify_date") Timestamp modifyDate);
 
+    /**
+     * Удаление дела по его UUID
+     * @param id - UUID дела
+     */
     @Query(deleteQuery)
     @Modifying(clearAutomatically = true)
     @Transactional

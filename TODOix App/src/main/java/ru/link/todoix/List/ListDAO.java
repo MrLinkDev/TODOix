@@ -20,7 +20,7 @@ public class ListDAO<ListEntity>{
     }
 
     public List<ListEntity> getAll(){
-        List<ListEntity> items = HibernateSessionFactory.getSessionFactory().openSession().createQuery("FROM ListEntity ").list();
+        List<ListEntity> items = HibernateSessionFactory.getSessionFactory().openSession().createQuery("FROM Entity ").list();
         return items;
     }
 
