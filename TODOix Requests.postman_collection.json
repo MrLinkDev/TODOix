@@ -1,0 +1,327 @@
+{
+	"info": {
+		"_postman_id": "622fb7d7-6d98-4b99-8b9f-0ba8e9984fbb",
+		"name": "TODOix Requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create list",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/list/create?name={{$randomBsAdjective}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"list",
+						"create"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{$randomBsAdjective}}"
+						}
+					]
+				},
+				"description": "Creating list with name \"postman_name\""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all lists (debug)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/list/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"list",
+						"all"
+					]
+				},
+				"description": "Getting all lists"
+			},
+			"response": []
+		},
+		{
+			"name": "Get list by UUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/list/c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"list",
+						"c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b"
+					]
+				},
+				"description": "Getting list by id"
+			},
+			"response": []
+		},
+		{
+			"name": "Modify list name by list UUID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/list/c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b/modify?name={{$randomProductName}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"list",
+						"c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b",
+						"modify"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{$randomProductName}}"
+						}
+					]
+				},
+				"description": "Modifying list name"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete list by UUID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/list/691eced9-2b91-4b53-930c-2d41937df04e/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"list",
+						"691eced9-2b91-4b53-930c-2d41937df04e",
+						"delete"
+					]
+				},
+				"description": "Deleting list by UUID"
+			},
+			"response": []
+		},
+		{
+			"name": "Create case",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/case/create?listId=c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b&name=postman_case&description=just a simple case&urgency={{$randomInt}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"case",
+						"create"
+					],
+					"query": [
+						{
+							"key": "listId",
+							"value": "c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b"
+						},
+						{
+							"key": "name",
+							"value": "postman_case"
+						},
+						{
+							"key": "description",
+							"value": "just a simple case"
+						},
+						{
+							"key": "urgency",
+							"value": "{{$randomInt}}"
+						}
+					]
+				},
+				"description": "Create case"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all cases (debug)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/case/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"case",
+						"all"
+					]
+				},
+				"description": "Getting all cases"
+			},
+			"response": []
+		},
+		{
+			"name": "Get case by UUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/case/0857f382-747d-4a29-843c-f03f9e932830",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"case",
+						"0857f382-747d-4a29-843c-f03f9e932830"
+					]
+				},
+				"description": "Getting case by UUID"
+			},
+			"response": []
+		},
+		{
+			"name": "Modify case by UUID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/case/0857f382-747d-4a29-843c-f03f9e932830/modify?name={{$randomCommonFileName}}&description={{$randomWords}}&urgency={{$randomInt}}&finished={{$randomBoolean}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"case",
+						"0857f382-747d-4a29-843c-f03f9e932830",
+						"modify"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{$randomCommonFileName}}"
+						},
+						{
+							"key": "description",
+							"value": "{{$randomWords}}"
+						},
+						{
+							"key": "urgency",
+							"value": "{{$randomInt}}"
+						},
+						{
+							"key": "finished",
+							"value": "{{$randomBoolean}}"
+						}
+					]
+				},
+				"description": "Modifying case by UUID"
+			},
+			"response": []
+		},
+		{
+			"name": "Mark down case by UUID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/case/0f8b97c0-3477-4d15-8b19-34b4942bf49f/mark-down",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"case",
+						"0f8b97c0-3477-4d15-8b19-34b4942bf49f",
+						"mark-down"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete case by UUID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/case/be175bad-d7d1-450e-b30b-423a5c8cec37/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"case",
+						"be175bad-d7d1-450e-b30b-423a5c8cec37",
+						"delete"
+					]
+				},
+				"description": "Deleting case by UUID"
+			},
+			"response": []
+		},
+		{
+			"name": "Get list of lists",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/review?p=1&size=15&sortBy=name",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"review"
+					],
+					"query": [
+						{
+							"key": "p",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "15"
+						},
+						{
+							"key": "sortBy",
+							"value": "name"
+						}
+					]
+				},
+				"description": "Getting list of all lists with parameters"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
