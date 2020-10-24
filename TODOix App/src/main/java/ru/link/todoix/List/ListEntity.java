@@ -1,21 +1,27 @@
 package ru.link.todoix.List;
 
+import org.hibernate.annotations.*;
+import org.hibernate.dialect.PostgreSQL95Dialect;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.*;
 
 /**
  * Сущность списка дел
  */
-@javax.persistence.Entity
+@Embeddable
+@Entity
 @Table(name = "lists", schema = "todoix_app", catalog = "todoix")
 public class ListEntity {
-    private UUID listId;
+    public UUID listId;
 
-    private String name;
+    public String name;
 
-    private Timestamp createDate;
-    private Timestamp modifyDate;
+    public Timestamp createDate;
+    public Timestamp modifyDate;
 
     /**
      * Пустой конструктор для создания списка дел
@@ -38,8 +44,10 @@ public class ListEntity {
      * @return UUID списка
      */
     @Id
-    @Column(name = "_id")
+    @GeneratedValue
+    @Column(name = "_id", nullable = false, insertable = true, updatable = false)
     public UUID getListId() {
+        System.out.println(listId);
         return listId;
     }
 
@@ -47,7 +55,7 @@ public class ListEntity {
      * Присвоение списку UUID
      * @param listId - новый UUID
      */
-    public void setListId(UUID listId) {
+    public void setListId(java.util.UUID listId) {
         this.listId = listId;
     }
 
@@ -56,7 +64,7 @@ public class ListEntity {
      * @return name - имя списка
      */
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, insertable = true, updatable = true)
     public String getName() {
         return name;
     }
@@ -74,7 +82,7 @@ public class ListEntity {
      * @return createDate - дата создания списка
      */
     @Basic
-    @Column(name = "create_date")
+    @Column(name = "create_date", nullable = false, insertable = true, updatable = false)
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -92,7 +100,7 @@ public class ListEntity {
      * @return modifyDate - дата изменения списка
      */
     @Basic
-    @Column(name = "modify_date")
+    @Column(name = "modify_date", nullable = false, insertable = true, updatable = true)
     public Timestamp getModifyDate() {
         return modifyDate;
     }

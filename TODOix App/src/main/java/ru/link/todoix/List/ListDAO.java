@@ -12,16 +12,16 @@ import java.util.List;
 public class ListDAO<ListEntity>{
 
     public void create(ListEntity listEntity){
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        session.beginTransaction();
-        session.save(listEntity);
-        session.getTransaction().commit();
-        session.close();
+        //Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        //session.beginTransaction();
+        //session.save(listEntity);
+        //session.getTransaction().commit();
+        //session.close();
     }
 
-    public List<ListEntity> getAll(){
-        List<ListEntity> items = HibernateSessionFactory.getSessionFactory().openSession().createQuery("FROM ListEntity ").list();
-        return items;
-    }
+    //p/ublic List<ListEntity> getAll(){
+        //List<ListEntity> items = HibernateSessionFactory.getSessionFactory().openSession().createQuery("FROM ListEntity ").list();
+        //return items;
+    //}
 
 }

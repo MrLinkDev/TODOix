@@ -17,7 +17,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.liquibase:liquibase-core'
-    implementation "org.hibernate:hibernate-core:5.4.2.Final"
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -31,4 +30,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+configurations {
+    developmentOnly
+//    runtimeClasspath {
+//        extendsFrom developmentOnly
+//    }
 }

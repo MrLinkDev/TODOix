@@ -1,11 +1,12 @@
 package ru.link.todoix.List;
 
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import ru.link.todoix.Case.*;
+import ru.link.todoix.HibernateSessionFactory;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -32,7 +33,8 @@ public class ListController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createList(@RequestParam String name){
         ListEntity listEntity = new ListEntity(name);
-        listRepository.save(listEntity);
+        //listEntity.setListId(UUID.randomUUID());
+        //listRepository.save(listEntity);
     }
 
     /**

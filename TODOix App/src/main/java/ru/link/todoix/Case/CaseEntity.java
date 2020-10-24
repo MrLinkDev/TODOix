@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Сущность дела
  */
-@javax.persistence.Entity
+@Entity
 @Table(name = "cases", schema = "todoix_app", catalog = "todoix")
 public class CaseEntity {
     private UUID caseId;
