@@ -1,8 +1,5 @@
 package ru.link.todoix.List;
 
-import org.hibernate.annotations.*;
-import org.hibernate.dialect.PostgreSQL95Dialect;
-
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -47,7 +44,6 @@ public class ListEntity {
     @GeneratedValue
     @Column(name = "_id", nullable = false, insertable = true, updatable = false)
     public UUID getListId() {
-        System.out.println(listId);
         return listId;
     }
 

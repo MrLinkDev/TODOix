@@ -3,24 +3,29 @@ package ru.link.todoix.Test;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "test", schema = "todoix_app", catalog = "todoix")
+public class TestEntity implements Serializable {
 
-public class TestEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    public int id;
 
-    private int id;
-
-    private String text;
-
+    @Basic
+    @Column(name = "text")
+    public String text;
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
         this.id = id;
     }
-
 
     public String getText() {
         return text;

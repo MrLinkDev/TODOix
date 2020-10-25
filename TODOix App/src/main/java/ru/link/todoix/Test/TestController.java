@@ -1,8 +1,6 @@
 package ru.link.todoix.Test;
 
 import org.hibernate.*;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +44,8 @@ public class TestController {
         session.persist(testEntity);*/
 
         SessionFactory factory = new Configuration()
-                .configure("hibernate.cfg.xml")
-                .addResource("test.hbm.xml")
+                .configure()
+                .addAnnotatedClass(TestEntity.class)
                 .buildSessionFactory();
         Session session = factory.openSession();
         session.beginTransaction();

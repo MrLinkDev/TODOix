@@ -1,6 +1,6 @@
 package ru.link.todoix.List;
 
-import org.hibernate.Session;
+import org.hibernate.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.*;
@@ -32,9 +32,11 @@ public class ListController {
     @RequestMapping(value = "/list/create", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void createList(@RequestParam String name){
-        ListEntity listEntity = new ListEntity(name);
-        //listEntity.setListId(UUID.randomUUID());
-        //listRepository.save(listEntity);
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.save(new ListEntity(name));
+        session.getTransaction().commit();
+        session.close();
     }
 
     /**
@@ -46,8 +48,12 @@ public class ListController {
     @RequestMapping(value = "/list/{list_id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ListPostModel getList(@PathVariable("list_id") final UUID id){
-        ListPostModel out = new ListPostModel(listRepository.findById(id));
-        out.setCases(caseRepository.findByListId(id));
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+
+        ListPostModel out = new ListPostModel(session.find(ListEntity.class, id));
+        //TODO: поиск дел по id списка
+
+        session.close();
         return out;
     }
 
@@ -59,7 +65,16 @@ public class ListController {
     @RequestMapping(value = "/list/{list_id}/modify", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void modifyList(@PathVariable("list_id") final UUID id, @RequestParam String name){
-        listRepository.updateById(id, name, new Timestamp(System.currentTimeMillis()));
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        session.beginTransaction();
+
+        ListEntity listEntity = session.find(ListEntity.class, id);
+        listEntity.setName(name);
+        listEntity.setModifyDate(new Timestamp(System.currentTimeMillis()));
+
+        session.update(listEntity);
+        session.getTransaction().commit();
+        session.close();
     }
 
     /**
