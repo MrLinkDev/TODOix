@@ -9,25 +9,33 @@ import java.util.*;
  */
 @Entity
 @Table(name = "cases", schema = "todoix_app", catalog = "todoix")
+// TODO: имя таблицы лучше указывать в единственном числе но не критично, можно оставить так
 public class CaseEntity {
-    private UUID caseId;
-    private UUID listId;
+
+    private UUID caseId; // TODO: нужна аннотация указывающая что это первичный ключ и лучше принудительно указывать
+    // наименолвания колонок через @Column
+
+    private UUID listId; // TODO: тут не так, тут нужно "private ListEntity list" прочитайте про аннотации
+    // @ManyToOne и @JoinColumn
 
     private String name;
     private String description;
 
-    private short urgency;
+    private short urgency; // TODO: ух как зубодробительно, вроде приоритет - priority, не сразу и поймешь,
+    // что это приоритет. но не критично, нусть так, но... приоритет лучше сделдать пересслением
 
     private boolean finished;
 
-    private Timestamp createDate;
+    private Timestamp createDate; //лучше сделать Date время с точностью до наносекунд слишком круто
     private Timestamp modifyDate;
 
+    // TODO: у lombok есть аннотация для объявления конструктора по умолчанию
     /**
      * Пустой конструктор
      */
     public CaseEntity(){}
 
+    // TODO: у lombok есть аннотация для объявления конструктора со всеми параметрами
     /**
      * Конструктор для создания дела
      * @param listId - UUID списка дел, к которому будет привязано дело
@@ -46,12 +54,14 @@ public class CaseEntity {
         createDate = modifyDate = new Timestamp(System.currentTimeMillis());
     }
 
+
+    // все методы даллее легко заменяются на 2 аннотации lombok - @Getter и @Setter
     /**
      * Получение UUID дела
      * @return caseId - UUID дела
      */
     @Id
-    @Column(name = "_id")
+    @Column(name = "_id") // TODO: здесь и даллее это нужно навесить на поля
     public UUID getCaseId() {
         return caseId;
     }
@@ -190,6 +200,9 @@ public class CaseEntity {
         this.modifyDate = modifyDate;
     }
 
+    // TODO: аннотация @Data поможет с более коротким переопрелением следующих 2 методов
+    // и почитайте про лобмбок, https://habr.com/ru/post/438870/ можно тут,
+    // можно на джава раш https://javarush.ru/groups/posts/518-annotacii-chastjh-vtoraja-lombok
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

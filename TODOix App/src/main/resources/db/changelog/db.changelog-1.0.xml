@@ -5,4 +5,16 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+    <!--
+            TODO(Шайдуко)
+            идентификатор changeSet тоже лучше сделать по типу имени файла
+            YYYYMMDDHHMMSS_цифра
+            так нужно чтоб понять, когда какая миграция писалась, птому что бывают случаи, когда не все changeSet-ы пишутся
+            в один день
+    -->
+
+
+<!--    TODO: добавить миграции на добаление таблиц и колонок в эти таблицы-->
+
+
 </databaseChangeLog>

@@ -16,8 +16,9 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/todoix")
-
 public class ListController {
+
+    // TODO: Общие дополнения как в CaseController
 
     @Autowired
     private ListRepository listRepository;

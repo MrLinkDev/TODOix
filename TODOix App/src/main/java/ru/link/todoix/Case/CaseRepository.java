@@ -32,7 +32,7 @@ public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
      * @return CaseEntity - сущность дела
      */
     @Query(findByIdQuery)
-    CaseEntity findById(@Param("id") UUID id);
+    CaseEntity findById(@Param("id") UUID id); // TODO: так вроде этот метод есть из коробки?
 
     /**
      * Поиск дел по UUID списка дел, к которому привязаны дела

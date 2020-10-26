@@ -16,6 +16,16 @@ public class CaseController {
     @Autowired
     private CaseRepository caseRepository;
 
+
+    // TODO: 2 дополнения сложу а один комментарий:
+    //  1. конроллеры ничего не долны знать о сущностях модели, для того чтоб конроллер мог оправлять/получать данные в
+    //      виде объектов есть DTO (можно в гугле спросить "DTO зачем нужны")
+    //  2. все действия с объектами в том числе через репозитори нужнь вынести в сервисы и желательно через интерфейсы,
+    //      например CaseService и CaseServiceImpl/ таким образом мы всегда сможем легко подменить реализацию, а вместе
+    //      с ней и зранилку и другую бизнес-логику и т.д.
+
+    //  TODO: @RequestMapping можно укоротить за счет использования GetMappint/PostMapping и т.д. запись будет короче
+
     /**
      * Создание дела
      * @param listId - UUID списка дел, к которому будет привязано дела
@@ -35,7 +45,7 @@ public class CaseController {
      * @param id - UUID дела
      * @return сущность дела
      */
-    @RequestMapping(value = "/case/{case_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/case/{case_id}", method = RequestMethod.GET) // TODO: "case_id" лучше в путях использовать camelCase
     @ResponseStatus(HttpStatus.OK)
     public CaseEntity getCase(@PathVariable("case_id") final UUID id){
         return caseRepository.findById(id);
@@ -67,7 +77,8 @@ public class CaseController {
      * Присвоение делу статуса завершённого
      * @param id - UUID дела
      */
-    @RequestMapping(value = "/case/{case_id}/mark-down", method = RequestMethod.PUT)
+    @RequestMapping(value = "/case/{case_id}/mark-down", method = RequestMethod.PUT) // TODO: хоть в задании
+    // и было "mark-down", но лучше чтоб было одинково - везде используйте camelCase
     @ResponseStatus(HttpStatus.OK)
     public void markDownCase(@PathVariable("case_id") final UUID id){
         caseRepository.markDownById(id, new Timestamp(System.currentTimeMillis()));
@@ -93,4 +104,5 @@ public class CaseController {
         return caseRepository.findAll();
     }
 
+    // TODO: а как посмотерть все дела в списке, с пигинацией и сортировкой, пользовтель явно же захочет это сделать
 }
