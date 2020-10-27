@@ -1,4 +1,6 @@
-package ru.link.todoix.List;
+package ru.link.todoix.Objects;
+
+import ru.link.todoix.Objects.ListEntity;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
-package ru.link.todoix.Case;
+package ru.link.todoix.Repositories;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import ru.link.todoix.Objects.CaseEntity;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -16,7 +16,7 @@ public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
     String updateQuery = "UPDATE CaseEntity caseEntity SET " +
             "caseEntity.name=:name, " +
             "caseEntity.description=:description, " +
-            "caseEntity.urgency=:urgency, " +
+            "caseEntity.priority=:priority, " +
             "caseEntity.finished=:finished, " +
             "caseEntity.modifyDate=:modify_date " +
             "WHERE caseEntity.caseId = :id";
@@ -47,7 +47,7 @@ public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
      * @param id - UUID дела
      * @param name - имя дела
      * @param description - краткое описание дела
-     * @param urgency - срочность дела (1-5)
+     * @param priority - срочность дела (1-5)
      * @param finished - статус дела (завершено или нет)
      * @param modifyDate - дата изменения дела
      */
@@ -58,9 +58,9 @@ public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
             @Param("id") UUID id,
             @Param("name") String name,
             @Param("description") String description,
-            @Param("urgency") short urgency,
+            @Param("priority") short priority,
             @Param("finished") boolean finished,
-            @Param("modify_date") Timestamp modifyDate);
+            @Param("modify_date") Date modifyDate);
 
     /**
      * Присвоение делу статуса завершённого
@@ -72,7 +72,7 @@ public interface CaseRepository extends JpaRepository<CaseEntity, Long> {
     @Transactional
     void markDownById(
             @Param("id") UUID id,
-            @Param("modify_date") Timestamp modifyDate);
+            @Param("modify_date") Date modifyDate);
 
     /**
      * Удаление дела по его UUID

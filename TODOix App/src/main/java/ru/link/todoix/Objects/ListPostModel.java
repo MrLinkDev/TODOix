@@ -1,8 +1,5 @@
-package ru.link.todoix.List;
+package ru.link.todoix.Objects;
 
-import ru.link.todoix.Case.CaseEntity;
-
-import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -13,8 +10,8 @@ public class ListPostModel{
 
     private String name;
 
-    private Timestamp createDate;
-    private Timestamp modifyDate;
+    private Date createDate;
+    private Date modifyDate;
 
     private int finishedCount = 0;
     private int openedCount = 0;
@@ -73,7 +70,7 @@ public class ListPostModel{
      * Получение даты создания списка
      * @return createDate - дата создания списка
      */
-    public Timestamp getCreateDate(){
+    public Date getCreateDate(){
         return createDate;
     }
 
@@ -81,7 +78,7 @@ public class ListPostModel{
      * Присвоение новой даты создания списку дел
      * @param createDate - дата создания списка
      */
-    public void setCreateDate(Timestamp createDate){
+    public void setCreateDate(Date createDate){
         this.createDate = createDate;
     }
 
@@ -89,7 +86,7 @@ public class ListPostModel{
      * Получение даты изменения списка
      * @return modifyDate - дата изменения списка
      */
-    public Timestamp getModifyDate(){
+    public Date getModifyDate(){
         return modifyDate;
     }
 
@@ -97,7 +94,7 @@ public class ListPostModel{
      * Присвоение новой даты изменения списка
      * @param modifyDate - дата изменения списка
      */
-    public void setModifyDate(Timestamp modifyDate){
+    public void setModifyDate(Date modifyDate){
         this.modifyDate = modifyDate;
     }
 

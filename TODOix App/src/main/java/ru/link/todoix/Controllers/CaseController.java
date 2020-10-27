@@ -1,8 +1,11 @@
-package ru.link.todoix.Case;
+package ru.link.todoix.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import ru.link.todoix.Repositories.*;
+import ru.link.todoix.Repositories.ListRepository;
+import ru.link.todoix.Objects.CaseEntity;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -16,17 +19,22 @@ public class CaseController {
     @Autowired
     private CaseRepository caseRepository;
 
+    @Autowired
+    private ListRepository listRepository;
+
     /**
      * Создание дела
      * @param listId - UUID списка дел, к которому будет привязано дела
      * @param name - название дела
      * @param description - описание дела
-     * @param urgency - срочность дела
+     * @param priority - срочность дела
      */
-    @RequestMapping(value = "/case/create", method = RequestMethod.POST)
+    @PostMapping(value = "/case/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createList(@RequestParam UUID listId, @RequestParam String name, @RequestParam String description,@RequestParam  short urgency){
-        CaseEntity caseEntity = new CaseEntity(listId, name, description, urgency);
+    public void createCase(@RequestParam UUID listId, @RequestParam String name, @RequestParam String description,@RequestParam  short priority){
+        CaseEntity caseEntity = new CaseEntity(listRepository.findById(listId), name, description, priority);
+        caseEntity.setCreateDate(new Date(System.currentTimeMillis()));
+        caseEntity.setModifyDate(new Date(System.currentTimeMillis()));
         caseRepository.save(caseEntity);
     }
 
@@ -35,9 +43,9 @@ public class CaseController {
      * @param id - UUID дела
      * @return сущность дела
      */
-    @RequestMapping(value = "/case/{case_id}", method = RequestMethod.GET)
+    @GetMapping(value = "/case/{caseId}")
     @ResponseStatus(HttpStatus.OK)
-    public CaseEntity getCase(@PathVariable("case_id") final UUID id){
+    public CaseEntity getCase(@PathVariable("caseId") final UUID id){
         return caseRepository.findById(id);
     }
 
@@ -46,20 +54,20 @@ public class CaseController {
      * @param id - UUID дела
      * @param name - новое название дела
      * @param description - новое описание дела
-     * @param urgency - новая срочность дела
+     * @param priority - новая срочность дела
      * @param finished - новый статус дела
      */
-    @RequestMapping(value = "/case/{case_id}/modify", method = RequestMethod.PUT)
+    @PutMapping(value = "/case/{caseId}/modify")
     @ResponseStatus(HttpStatus.OK)
-    public void modifyCase(@PathVariable("case_id") final UUID id, @RequestParam(required = false) String name, @RequestParam(required = false) String description, @RequestParam(required = false) Short urgency, @RequestParam(required = false) Boolean finished){
+    public void modifyCase(@PathVariable("caseId") final UUID id, @RequestParam(required = false) String name, @RequestParam(required = false) String description, @RequestParam(required = false) Short priority, @RequestParam(required = false) Boolean finished){
         CaseEntity caseEntity = caseRepository.findById(id);
         caseRepository.updateById(
                 id,
                 name == null ? caseEntity.getName() : name,
                 description == null ? caseEntity.getDescription() : description,
-                urgency == null ? caseEntity.getUrgency() : urgency,
+                priority == null ? caseEntity.getPriority() : priority,
                 finished == null ? caseEntity.isFinished() : finished,
-                new Timestamp(System.currentTimeMillis())
+                new Date(System.currentTimeMillis())
         );
     }
 
@@ -67,9 +75,9 @@ public class CaseController {
      * Присвоение делу статуса завершённого
      * @param id - UUID дела
      */
-    @RequestMapping(value = "/case/{case_id}/mark-down", method = RequestMethod.PUT)
+    @PutMapping(value = "/case/{caseId}/markDown")
     @ResponseStatus(HttpStatus.OK)
-    public void markDownCase(@PathVariable("case_id") final UUID id){
+    public void markDownCase(@PathVariable("caseId") final UUID id){
         caseRepository.markDownById(id, new Timestamp(System.currentTimeMillis()));
     }
 
@@ -77,9 +85,9 @@ public class CaseController {
      * Удаление дела по его UUID
      * @param id - UUID дела
      */
-    @RequestMapping(value = "/case/{case_id}/delete", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/case/{caseId}/delete")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteCase(@PathVariable("case_id") final UUID id){
+    public void deleteCase(@PathVariable("caseId") final UUID id){
         caseRepository.deleteById(id);
     }
 
@@ -87,7 +95,7 @@ public class CaseController {
      * Получение всех дел, нужен был для отладки
      * @return List<Entity>
      */
-    @RequestMapping(value = "/case/all", method = RequestMethod.GET)
+    @GetMapping(value = "/case/all")
     @ResponseStatus(HttpStatus.OK)
     public List<CaseEntity> getAll(){
         return caseRepository.findAll();

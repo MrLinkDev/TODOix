@@ -1,11 +1,11 @@
-package ru.link.todoix.List;
+package ru.link.todoix.Repositories;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import ru.link.todoix.Objects.ListEntity;
 
-import java.sql.Timestamp;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Набор методов для работы с таблицей списков дел
@@ -32,7 +32,7 @@ public interface ListRepository extends JpaRepository<ListEntity, Long> {
     @Query(updateQuery)
     @Modifying
     @Transactional
-    void updateById(@Param("id") UUID id, @Param("name") String name, @Param("modify_date") Timestamp modifyDate);
+    void updateById(@Param("id") UUID id, @Param("name") String name, @Param("modify_date") Date modifyDate);
 
     /**
      * Удаление записи о списке дел по его UUID

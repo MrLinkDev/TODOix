@@ -20,7 +20,7 @@ public class TestEntity implements Serializable {
     public String text;
 
     public int getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(int id) {
