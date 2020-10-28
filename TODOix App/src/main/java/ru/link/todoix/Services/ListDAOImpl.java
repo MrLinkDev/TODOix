@@ -2,15 +2,19 @@ package ru.link.todoix.Services;
 
 import ru.link.todoix.Objects.ListDTO;
 
-import java.util.UUID;
+import java.util.*;
 
 public interface ListDAOImpl {
 
-    public void create(ListDTO listDTO);
+    void create(ListDTO listDTO);
 
-    public ListDTO findById(UUID id);
+    ListDTO findById(UUID id);
 
-    public void update(ListDTO listDTO);
+    void update(ListDTO listDTO);
 
-    public void deleteById(UUID id);
+    void deleteById(UUID id);
+
+    List<ListDTO> getAll();
+
+    List<ListDTO> getPage(int page, int size, String sortBy);
 }

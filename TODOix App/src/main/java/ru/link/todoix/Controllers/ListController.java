@@ -7,7 +7,6 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import ru.link.todoix.PostModels.*;
 import ru.link.todoix.Repositories.*;
-import ru.link.todoix.HibernateSessionFactory;
 import ru.link.todoix.Objects.*;
 import ru.link.todoix.Services.ListDAO;
 
@@ -21,9 +20,6 @@ import java.util.*;
 
 public class ListController {
     private final ListDAO listDAO = new ListDAO();
-
-    @Autowired
-    private ListRepository listRepository;
 
     @Autowired
     private CaseRepository caseRepository;
@@ -86,12 +82,12 @@ public class ListController {
 
     /**
      * Просмотр всех списков дел, нужен был для отладки
-     * @return List<ListEntity> - список всех списков, но без дел, привязанных к ним
+     * @return List<ListDTO> - список всех списков, но без дел, привязанных к ним
      */
     @GetMapping(value = "/list/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<ListEntity> getAll(){
-        return listRepository.findAll();
+    public List<ListDTO> getAll(){
+        return listDAO.getAll();
     }
 
     /**
@@ -104,19 +100,14 @@ public class ListController {
     @GetMapping(value = "/review")
     @ResponseStatus(HttpStatus.OK)
     public ReviewPostModel getReview(@RequestParam(required = false) Integer p, @RequestParam(required = false) Integer size, @RequestParam(required = false) String sortBy){
-        Pageable pageable = PageRequest.of(
-                p == null ? 0 : p - 1,
-                size == null ? 10 : size > 100 ? 10 : size,
-                Sort.by(sortBy == null ? "name" : sortBy)
-        );
-        Page<ListEntity> page = listRepository.findAll(pageable);
+        List<ListDTO> page = listDAO.getPage(p == null ? 0 : p - 1, size == null ? 10 : size > 100 ? 10 : size, sortBy == null ? "name" : sortBy);
 
         int finishedListCount = 0;
         int openedListCount = 0;
 
-        for (ListEntity list : page.getContent()){
+        for (ListDTO list : page){
             boolean finished = true;
-            List<CaseEntity> cases = caseRepository.findByListId(list.getListId());
+            List<CaseEntity> cases = caseRepository.findByListId(list.getId());
             for (CaseEntity caseItem : cases){
                 if (!caseItem.isFinished()) {
                     finished = false;
@@ -128,7 +119,7 @@ public class ListController {
         }
 
         ReviewPostModel review = new ReviewPostModel();
-        review.setLists(page.getContent());
+        review.setLists(page);
         review.setOpenedListCount(openedListCount);
         review.setFinishedListCount(finishedListCount);
 

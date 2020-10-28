@@ -1,6 +1,7 @@
 package ru.link.todoix.Objects;
 
 import lombok.*;
+import org.hibernate.annotations.Filter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;

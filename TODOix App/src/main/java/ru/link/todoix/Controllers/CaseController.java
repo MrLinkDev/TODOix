@@ -3,10 +3,12 @@ package ru.link.todoix.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import ru.link.todoix.Objects.*;
 import ru.link.todoix.Repositories.*;
 import ru.link.todoix.Repositories.ListRepository;
-import ru.link.todoix.Objects.CaseEntity;
+import ru.link.todoix.Services.*;
 
+import javax.swing.event.ListDataEvent;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -16,6 +18,9 @@ import java.util.*;
 @RestController
 @RequestMapping("/todoix")
 public class CaseController {
+    private CaseDAO caseDAO = new CaseDAO();
+    private ListDAO listDAO = new ListDAO();
+
     @Autowired
     private CaseRepository caseRepository;
 
@@ -32,10 +37,21 @@ public class CaseController {
     @PostMapping(value = "/case/create")
     @ResponseStatus(HttpStatus.CREATED)
     public void createCase(@RequestParam UUID listId, @RequestParam String name, @RequestParam String description,@RequestParam  short priority){
-        CaseEntity caseEntity = new CaseEntity(listRepository.findById(listId), name, description, priority);
+        /**CaseEntity caseEntity = new CaseEntity(listRepository.findById(listId), name, description, priority);
         caseEntity.setCreateDate(new Date(System.currentTimeMillis()));
         caseEntity.setModifyDate(new Date(System.currentTimeMillis()));
-        caseRepository.save(caseEntity);
+        caseRepository.save(caseEntity);*/
+        CaseDTO caseDTO = new CaseDTO();
+        caseDTO.setCaseId(UUID.randomUUID());
+        caseDTO.setListId(listDAO.findById(listId));
+        caseDTO.setName(name);
+        caseDTO.setDescription(description);
+        caseDTO.setPriority(priority);
+        caseDTO.setFinished(false);
+        caseDTO.setCreateDate(new Date(System.currentTimeMillis()));
+        caseDTO.setModifyDate(new Date(System.currentTimeMillis()));
+
+        caseDAO.create(caseDTO);
     }
 
     /**
