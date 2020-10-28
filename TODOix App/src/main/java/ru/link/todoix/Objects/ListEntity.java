@@ -15,16 +15,16 @@ import java.util.*;
 public class ListEntity {
 
     @Id @GeneratedValue @Column(name = "_id")
-    public UUID listId;
+    private UUID listId;
 
     @Basic @Column(name = "name")
-    @NonNull public String name;
+    @NonNull private String name;
 
     @Basic @Column(name = "create_date")
-    public Date createDate;
+    private Date createDate;
 
     @Basic @Column(name = "modify_date")
-    public Date modifyDate;
+    private Date modifyDate;
 
 
 }

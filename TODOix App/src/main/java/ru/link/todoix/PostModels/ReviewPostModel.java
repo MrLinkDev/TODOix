@@ -1,4 +1,4 @@
-package ru.link.todoix.Objects;
+package ru.link.todoix.PostModels;
 
 import ru.link.todoix.Objects.ListEntity;
 

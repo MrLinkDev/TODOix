@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import ru.link.todoix.PostModels.*;
 import ru.link.todoix.Repositories.*;
 import ru.link.todoix.HibernateSessionFactory;
 import ru.link.todoix.Objects.*;
+import ru.link.todoix.Services.ListDAO;
 
 import java.util.*;
 
@@ -18,6 +20,7 @@ import java.util.*;
 @RequestMapping("/todoix")
 
 public class ListController {
+    private final ListDAO listDAO = new ListDAO();
 
     @Autowired
     private ListRepository listRepository;
@@ -32,11 +35,13 @@ public class ListController {
     @PostMapping(value = "/list/create")
     @ResponseStatus(HttpStatus.CREATED)
     public void createList(@RequestParam String name){
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        session.beginTransaction();
-        session.save(new ListEntity(name));
-        session.getTransaction().commit();
-        session.close();
+        ListDTO listDTO = new ListDTO();
+        listDTO.setId(UUID.randomUUID());
+        listDTO.setName(name);
+        listDTO.setCreateDate(new Date(System.currentTimeMillis()));
+        listDTO.setModifyDate(new Date(System.currentTimeMillis()));
+
+        listDAO.create(listDTO);
     }
 
     /**
@@ -48,12 +53,9 @@ public class ListController {
     @GetMapping(value = "/list/{listId}")
     @ResponseStatus(HttpStatus.OK)
     public ListPostModel getList(@PathVariable("listId") final UUID id){
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-
-        ListPostModel out = new ListPostModel(session.find(ListEntity.class, id));
+        ListPostModel out = new ListPostModel(listDAO.findById(id));
         //TODO: поиск дел по id списка
 
-        session.close();
         return out;
     }
 
@@ -65,16 +67,11 @@ public class ListController {
     @PutMapping(value = "/list/{listId}/modify")
     @ResponseStatus(HttpStatus.OK)
     public void modifyList(@PathVariable("listId") final UUID id, @RequestParam String name){
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        session.beginTransaction();
+        ListDTO listDTO = listDAO.findById(id);
+        listDTO.setName(name);
+        listDTO.setModifyDate(new Date(System.currentTimeMillis()));
 
-        ListEntity listEntity = session.find(ListEntity.class, id);
-        listEntity.setName(name);
-        listEntity.setModifyDate(new Date(System.currentTimeMillis()));
-
-        session.update(listEntity);
-        session.getTransaction().commit();
-        session.close();
+        listDAO.update(listDTO);
     }
 
     /**
@@ -84,7 +81,7 @@ public class ListController {
     @DeleteMapping(value = "/list/{listId}/delete")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteList(@PathVariable("listId") final UUID id){
-        listRepository.deleteById(id);
+        listDAO.deleteById(id);
     }
 
     /**

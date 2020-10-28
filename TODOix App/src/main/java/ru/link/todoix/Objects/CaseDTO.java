@@ -11,4 +11,5 @@ public class CaseDTO {
     private String name;
     private String description;
     private short priority;
+    private boolean finished;
 }

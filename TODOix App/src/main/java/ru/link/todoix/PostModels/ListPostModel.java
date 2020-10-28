@@ -1,4 +1,6 @@
-package ru.link.todoix.Objects;
+package ru.link.todoix.PostModels;
+
+import ru.link.todoix.Objects.*;
 
 import java.util.*;
 
@@ -16,7 +18,7 @@ public class ListPostModel{
     private int finishedCount = 0;
     private int openedCount = 0;
 
-    private List<CaseEntity> cases;
+    private List<CaseDTO> cases;
 
     /**
      * Пустой конструктор
@@ -25,13 +27,13 @@ public class ListPostModel{
 
     /**
      * Конструктор создания возвращаемой модели
-     * @param listEntity - сущность списка дел
+     * @param listDTO - DTO списка дел
      */
-    public ListPostModel(ListEntity listEntity){
-        id = listEntity.getListId();
-        name = listEntity.getName();
-        createDate = listEntity.getCreateDate();
-        modifyDate = listEntity.getModifyDate();
+    public ListPostModel(ListDTO listDTO){
+        id = listDTO.getId();
+        name = listDTO.getName();
+        createDate = listDTO.getCreateDate();
+        modifyDate = listDTO.getModifyDate();
     }
 
     /**
@@ -102,7 +104,7 @@ public class ListPostModel{
      * Получение дел, привязанных к списку
      * @return cases - дела, привязанные к списку
      */
-    public List<CaseEntity> getCases(){
+    public List<CaseDTO> getCases(){
         return cases;
     }
 
@@ -111,10 +113,10 @@ public class ListPostModel{
      * подсчёт завершённых и открытых дел
      * @param cases - дела, привязанные к списку
      */
-    public void setCases(List<CaseEntity> cases){
+    public void setCases(List<CaseDTO> cases){
         this.cases = cases;
 
-        for(CaseEntity c: cases)
+        for(CaseDTO c: cases)
             if (c.isFinished()) ++finishedCount;
             else ++openedCount;
     }
