@@ -67,6 +67,8 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     public void modifyTask(@PathVariable("taskId") final UUID id, @RequestParam(required = false) String name, @RequestParam(required = false) String description, @RequestParam(required = false) String priority, @RequestParam(required = false) Boolean finished){
         TaskDTO taskDTO = taskService.findById(id);
+
+
         if (name != null) taskDTO.setName(name);
         if (description != null) taskDTO.setDescription(description);
         if (priority != null) taskDTO.setPriority(Priority.valueOfString(priority));

@@ -1,13 +1,13 @@
 package ru.link.todoix.Controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import ru.link.todoix.PostModels.*;
-import ru.link.todoix.Repositories.*;
 import ru.link.todoix.Objects.*;
 import ru.link.todoix.Services.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 /**
@@ -46,8 +46,8 @@ public class ListController {
      */
     @GetMapping(value = "/list/{listId}")
     @ResponseStatus(HttpStatus.OK)
-    public ListPostModel getList(@PathVariable("listId") final UUID id){
-        ListPostModel out = new ListPostModel(listService.findById(id));
+    public ListModel getList(@PathVariable("listId") final UUID id){
+        ListModel out = new ListModel(listService.findById(id));
         out.setTasks(taskService.findByList(listService.findById(id)));
         //TODO: поиск дел по id списка
 
@@ -98,8 +98,8 @@ public class ListController {
      */
     @GetMapping(value = "/review")
     @ResponseStatus(HttpStatus.OK)
-    public ReviewPostModel getReview(@RequestParam(required = false) Integer p, @RequestParam(required = false) Integer size, @RequestParam(required = false) String sortBy){
-        ReviewPostModel review = listService.getPage(
+    public ReviewModel getReview(@RequestParam(required = false) Integer p, @RequestParam(required = false) Integer size, @RequestParam(required = false) String sortBy){
+        ReviewModel review = listService.getPage(
                 p == null ? 0 : p - 1,
                 size == null ? 10 : size > 100 ? 10 : size,
                 sortBy == null ? "name" : sortBy

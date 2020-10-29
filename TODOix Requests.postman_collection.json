@@ -11,7 +11,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/todoix/list/create?name={{$randomBsAdjective}}",
+					"raw": "localhost:8080/todoix/list/create?name={{$randomCommonFileName}}",
 					"host": [
 						"localhost"
 					],
@@ -24,7 +24,7 @@
 					"query": [
 						{
 							"key": "name",
-							"value": "{{$randomBsAdjective}}"
+							"value": "{{$randomCommonFileName}}"
 						}
 					]
 				},
@@ -59,7 +59,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/todoix/list/c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b",
+					"raw": "localhost:8080/todoix/list/dd76e587-03d8-4215-be19-0e296c45efc5",
 					"host": [
 						"localhost"
 					],
@@ -67,7 +67,7 @@
 					"path": [
 						"todoix",
 						"list",
-						"c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b"
+						"dd76e587-03d8-4215-be19-0e296c45efc5"
 					]
 				},
 				"description": "Getting list by id"
@@ -80,7 +80,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/todoix/list/c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b/modify?name={{$randomProductName}}",
+					"raw": "localhost:8080/todoix/list/8119b2e3-7775-4079-9903-240130549440/modify?name={{$randomCatchPhraseAdjective}}",
 					"host": [
 						"localhost"
 					],
@@ -88,13 +88,13 @@
 					"path": [
 						"todoix",
 						"list",
-						"c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b",
+						"8119b2e3-7775-4079-9903-240130549440",
 						"modify"
 					],
 					"query": [
 						{
 							"key": "name",
-							"value": "{{$randomProductName}}"
+							"value": "{{$randomCatchPhraseAdjective}}"
 						}
 					]
 				},
@@ -108,7 +108,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/todoix/list/691eced9-2b91-4b53-930c-2d41937df04e/delete",
+					"raw": "localhost:8080/todoix/list/3dec1fc1-0ec9-42c2-a231-c8c482cd1174/delete",
 					"host": [
 						"localhost"
 					],
@@ -116,7 +116,7 @@
 					"path": [
 						"todoix",
 						"list",
-						"691eced9-2b91-4b53-930c-2d41937df04e",
+						"3dec1fc1-0ec9-42c2-a231-c8c482cd1174",
 						"delete"
 					]
 				},
@@ -125,37 +125,37 @@
 			"response": []
 		},
 		{
-			"name": "Create case",
+			"name": "Create task",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/todoix/case/create?listId=c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b&name=postman_case&description=just a simple case&urgency={{$randomInt}}",
+					"raw": "localhost:8080/todoix/task/create?listId=dbefee59-aa0d-4ac5-9398-3e89bb3dd26a&name={{$randomNoun}}&description=just a simple case&priority=highest",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"todoix",
-						"case",
+						"task",
 						"create"
 					],
 					"query": [
 						{
 							"key": "listId",
-							"value": "c62c6fe8-8afc-439a-9d34-81c5cc7dcc0b"
+							"value": "dbefee59-aa0d-4ac5-9398-3e89bb3dd26a"
 						},
 						{
 							"key": "name",
-							"value": "postman_case"
+							"value": "{{$randomNoun}}"
 						},
 						{
 							"key": "description",
 							"value": "just a simple case"
 						},
 						{
-							"key": "urgency",
-							"value": "{{$randomInt}}"
+							"key": "priority",
+							"value": "highest"
 						}
 					]
 				},
@@ -164,19 +164,19 @@
 			"response": []
 		},
 		{
-			"name": "Get all cases (debug)",
+			"name": "Get all tasks (debug)",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/todoix/case/all",
+					"raw": "localhost:8080/todoix/task/all",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"todoix",
-						"case",
+						"task",
 						"all"
 					]
 				},
@@ -185,20 +185,20 @@
 			"response": []
 		},
 		{
-			"name": "Get case by UUID",
+			"name": "Get taks by UUID",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/todoix/case/0857f382-747d-4a29-843c-f03f9e932830",
+					"raw": "localhost:8080/todoix/task/77fec933-8c97-4f7a-807b-4f343c1bbaa4",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"todoix",
-						"case",
-						"0857f382-747d-4a29-843c-f03f9e932830"
+						"task",
+						"77fec933-8c97-4f7a-807b-4f343c1bbaa4"
 					]
 				},
 				"description": "Getting case by UUID"
@@ -206,20 +206,20 @@
 			"response": []
 		},
 		{
-			"name": "Modify case by UUID",
+			"name": "Modify task by UUID",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/todoix/case/0857f382-747d-4a29-843c-f03f9e932830/modify?name={{$randomCommonFileName}}&description={{$randomWords}}&urgency={{$randomInt}}&finished={{$randomBoolean}}",
+					"raw": "localhost:8080/todoix/task/77fec933-8c97-4f7a-807b-4f343c1bb4a4/modify?name={{$randomCommonFileName}}&description={{$randomWords}}&priority=medium&finished={{$randomBoolean}}",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"todoix",
-						"case",
-						"0857f382-747d-4a29-843c-f03f9e932830",
+						"task",
+						"77fec933-8c97-4f7a-807b-4f343c1bb4a4",
 						"modify"
 					],
 					"query": [
@@ -232,8 +232,8 @@
 							"value": "{{$randomWords}}"
 						},
 						{
-							"key": "urgency",
-							"value": "{{$randomInt}}"
+							"key": "priority",
+							"value": "medium"
 						},
 						{
 							"key": "finished",
@@ -246,41 +246,41 @@
 			"response": []
 		},
 		{
-			"name": "Mark down case by UUID",
+			"name": "Mark down task by UUID",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/todoix/case/0f8b97c0-3477-4d15-8b19-34b4942bf49f/mark-down",
+					"raw": "localhost:8080/todoix/task/cda4fd6f-d080-4401-ba29-e68fa14dd91b/markDown",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"todoix",
-						"case",
-						"0f8b97c0-3477-4d15-8b19-34b4942bf49f",
-						"mark-down"
+						"task",
+						"cda4fd6f-d080-4401-ba29-e68fa14dd91b",
+						"markDown"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Delete case by UUID",
+			"name": "Delete task by UUID",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/todoix/case/be175bad-d7d1-450e-b30b-423a5c8cec37/delete",
+					"raw": "localhost:8080/todoix/task/cda4fd6f-d080-4401-ba29-e68fa14dd90b/delete",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"todoix",
-						"case",
-						"be175bad-d7d1-450e-b30b-423a5c8cec37",
+						"task",
+						"cda4fd6f-d080-4401-ba29-e68fa14dd90b",
 						"delete"
 					]
 				},
@@ -294,7 +294,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/todoix/review?p=1&size=15&sortBy=name",
+					"raw": "localhost:8080/todoix/review?p=1&size=10&sortBy=name",
 					"host": [
 						"localhost"
 					],
@@ -310,7 +310,7 @@
 						},
 						{
 							"key": "size",
-							"value": "15"
+							"value": "10"
 						},
 						{
 							"key": "sortBy",
@@ -319,6 +319,40 @@
 					]
 				},
 				"description": "Getting list of all lists with parameters"
+			},
+			"response": []
+		},
+		{
+			"name": "Get list of tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/todoix/task/review?p=1&size=100&sortBy=name",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todoix",
+						"task",
+						"review"
+					],
+					"query": [
+						{
+							"key": "p",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "100"
+						},
+						{
+							"key": "sortBy",
+							"value": "name"
+						}
+					]
+				}
 			},
 			"response": []
 		}

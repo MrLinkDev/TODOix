@@ -1,7 +1,7 @@
 package ru.link.todoix.Services;
 
 import ru.link.todoix.Objects.ListDTO;
-import ru.link.todoix.PostModels.ReviewPostModel;
+import ru.link.todoix.PostModels.ReviewModel;
 
 import java.util.*;
 
@@ -17,5 +17,5 @@ public interface ListService {
 
     List<ListDTO> getAll();
 
-    ReviewPostModel getPage(int p, int size, String sort);
+    ReviewModel getPage(int p, int size, String sort);
 }

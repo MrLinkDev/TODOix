@@ -6,7 +6,7 @@ import ru.link.todoix.Objects.*;
 import java.util.List;
 
 @Data
-public class ReviewPostModel {
+public class ReviewModel {
     private int finishedListCount = 0;
     private int openedListCount = 0;
 

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import ru.link.todoix.Objects.*;
-import ru.link.todoix.PostModels.ReviewPostModel;
+import ru.link.todoix.PostModels.ReviewModel;
 import ru.link.todoix.Repositories.*;
 
 import java.util.*;
@@ -47,7 +47,7 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
-    public ReviewPostModel getPage(int p, int size, String sort) {
+    public ReviewModel getPage(int p, int size, String sort) {
         Pageable pageable = PageRequest.of(p, size, Sort.by(sort));
         Page<ListEntity> page = listRepository.findAll(pageable);
 
@@ -68,7 +68,7 @@ public class ListServiceImpl implements ListService {
             else ++openedListCount;
         }
 
-        ReviewPostModel review = new ReviewPostModel();
+        ReviewModel review = new ReviewModel();
         review.setLists(Converter.convertListOfListEntitiesToDTO(page.getContent()));
         review.setOpenedListCount(openedListCount);
         review.setFinishedListCount(finishedListCount);

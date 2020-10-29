@@ -9,7 +9,7 @@ import java.util.*;
  * Модель возвращаемых данных для списка дел
  */
 @Data
-public class ListPostModel{
+public class ListModel {
     private UUID id;
 
     private String name;
@@ -26,7 +26,7 @@ public class ListPostModel{
      * Конструктор создания возвращаемой модели
      * @param listDTO - DTO списка дел
      */
-    public ListPostModel(ListDTO listDTO){
+    public ListModel(ListDTO listDTO){
         id = listDTO.getId();
         name = listDTO.getName();
         createDate = listDTO.getCreateDate();

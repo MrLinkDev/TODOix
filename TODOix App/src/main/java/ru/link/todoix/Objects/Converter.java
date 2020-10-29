@@ -39,6 +39,7 @@ public class Converter {
     }
 
     public static TaskDTO entityToDTO(TaskEntity taskEntity){
+        if (taskEntity == null) return null;
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setId(taskEntity.getId());
         taskDTO.setListId(entityToDTO(taskEntity.getTaskListId()));
