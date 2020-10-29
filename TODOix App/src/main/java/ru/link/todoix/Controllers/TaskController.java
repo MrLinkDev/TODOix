@@ -103,7 +103,7 @@ public class TaskController {
 
     /**
      * Получение всех дел, нужен был для отладки
-     * @return List<Entity>
+     * @return List<TaskDTO>
      */
     @GetMapping(value = "/task/all")
     @ResponseStatus(HttpStatus.OK)
@@ -111,6 +111,13 @@ public class TaskController {
         return taskService.getAll();
     }
 
+    /**
+     * Получение списка дел
+     * @param p - страница, которую нужно получить
+     * @param size - размер страницы (количество элементов на ней)
+     * @param sortBy - параметр сортировки (id, name, listId, createDate, modifyDate, description, priority)
+     * @return List<TaskDTO> - список дел
+     */
     @GetMapping(value = "/task/review")
     @ResponseStatus(HttpStatus.OK)
     public List<TaskDTO> getReview(@RequestParam(required = false) Integer p, @RequestParam(required = false) Integer size, @RequestParam(required = false) String sortBy){

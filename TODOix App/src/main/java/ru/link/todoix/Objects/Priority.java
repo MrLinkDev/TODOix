@@ -1,8 +1,16 @@
 package ru.link.todoix.Objects;
 
+/**
+ * Приоритет дел
+ */
 public enum Priority {
     lowest, low, medium, high, highest;
 
+    /**
+     * Преобразование priority типа String в enum
+     * @param priority - приоритет
+     * @return Priority
+     */
     public static Priority valueOfString(String priority){
         switch (priority){
             case "lowest": return lowest;

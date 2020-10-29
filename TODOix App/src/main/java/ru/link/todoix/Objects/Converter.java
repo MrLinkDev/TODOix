@@ -2,8 +2,16 @@ package ru.link.todoix.Objects;
 
 import java.util.*;
 
+/**
+ * Класс для конвертации DTO в Entity и обратно
+ */
 public class Converter {
 
+    /**
+     * Конвертация ListEntity в ListDTO
+     * @param listEntity - сущность списка дел
+     * @return ListDTO - DTO списка дел
+     */
     public static ListDTO entityToDTO(ListEntity listEntity){
         if (listEntity == null) return null;
         ListDTO listDTO = new ListDTO();
@@ -14,6 +22,11 @@ public class Converter {
         return listDTO;
     }
 
+    /**
+     * Конвертация ListDTO в ListEntity
+     * @param listDTO - DTO списка дел
+     * @return ListEntity - сущность списка дел
+     */
     public static ListEntity DTOToEntity(ListDTO listDTO){
         ListEntity listEntity = new ListEntity();
         listEntity.setListId(listDTO.getId());
@@ -23,6 +36,11 @@ public class Converter {
         return listEntity;
     }
 
+    /**
+     * Конвертация списка ListEntity в список ListDTO
+     * @param list - список сущностей списка дел
+     * @return List<ListDTO> - список DTO списка дел
+     */
     public static List<ListDTO> convertListOfListEntitiesToDTO(List<ListEntity> list){
         List<ListDTO> DTOList = new ArrayList<>();
         for (ListEntity listEntity : list){
@@ -38,6 +56,11 @@ public class Converter {
         return DTOList;
     }
 
+    /**
+     * Конвертация TaskEntity в TaskDTO
+     * @param taskEntity - сущность дела
+     * @return ListDTO - DTO дела
+     */
     public static TaskDTO entityToDTO(TaskEntity taskEntity){
         if (taskEntity == null) return null;
         TaskDTO taskDTO = new TaskDTO();
@@ -52,6 +75,11 @@ public class Converter {
         return taskDTO;
     }
 
+    /**
+     * Конвертация TaskDTO в TaskEntity
+     * @param taskDTO - DTO дела
+     * @return TaskEntity - сущность дела
+     */
     public static TaskEntity DTOToEntity(TaskDTO taskDTO){
         TaskEntity taskEntity = new TaskEntity();
         taskEntity.setId(taskDTO.getId());
@@ -65,6 +93,11 @@ public class Converter {
         return taskEntity;
     }
 
+    /**
+     * Конвертация списка TaskEntity в список TaskDTO
+     * @param entityList - список сущностей дел
+     * @return List<TaskDTO> - список DTO дел
+     */
     public static List<TaskDTO> convertListOfTaskEntitiesToDTO(List<TaskEntity> entityList){
         List<TaskDTO> DTOTask = new ArrayList<>();
         for (TaskEntity taskEntity : entityList){

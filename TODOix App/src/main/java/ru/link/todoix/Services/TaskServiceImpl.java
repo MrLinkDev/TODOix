@@ -8,6 +8,9 @@ import ru.link.todoix.Repositories.TaskRepository;
 
 import java.util.*;
 
+/**
+ * Сервис для работы с репозиторием дел
+ */
 @Service
 public class TaskServiceImpl implements TaskService {
     @Autowired

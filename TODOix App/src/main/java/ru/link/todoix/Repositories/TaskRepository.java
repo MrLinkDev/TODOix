@@ -7,6 +7,9 @@ import ru.link.todoix.Objects.*;
 
 import java.util.*;
 
+/**
+ * Набор методов для работы с таблицей заданий
+ */
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
     String findByIdQuery = "SELECT taskEntity FROM TaskEntity taskEntity WHERE taskEntity.id = :id";
     String findByListQuery = "SELECT taskEntity FROM TaskEntity taskEntity WHERE taskEntity.taskListId = :list";

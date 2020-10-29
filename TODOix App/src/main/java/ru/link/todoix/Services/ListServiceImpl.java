@@ -9,6 +9,9 @@ import ru.link.todoix.Repositories.*;
 
 import java.util.*;
 
+/**
+ * Сервис для работы с репозиторием списка дел
+ */
 @Service
 public class ListServiceImpl implements ListService {
     @Autowired

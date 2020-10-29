@@ -9,6 +9,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.link.todoix.PostModels.ErrorModel;
 
+/**
+ * Обработчик исключений
+ */
 @ControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler {
 

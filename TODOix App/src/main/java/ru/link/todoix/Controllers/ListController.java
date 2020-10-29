@@ -7,7 +7,6 @@ import ru.link.todoix.PostModels.*;
 import ru.link.todoix.Objects.*;
 import ru.link.todoix.Services.*;
 
-import javax.validation.Valid;
 import java.util.*;
 
 /**
@@ -41,7 +40,7 @@ public class ListController {
     /**
      * Получение списка дел по UUID
      * @param id - UUID списка дел
-     * @return ListPostModel, в котором находится список дел
+     * @return ListModel, в котором находится список дел
      * и сами дела, привязанные к возвращаемому списку
      */
     @GetMapping(value = "/list/{listId}")

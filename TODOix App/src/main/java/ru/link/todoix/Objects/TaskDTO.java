@@ -4,9 +4,12 @@ import lombok.Data;
 
 import java.util.*;
 
+/**
+ * DTO дела
+ */
 @Data
 public class TaskDTO {
-    private UUID Id;
+    private UUID id;
     private ListDTO listId;
     private String name;
     private String description;

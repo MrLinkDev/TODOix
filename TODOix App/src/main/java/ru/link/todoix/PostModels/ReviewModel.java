@@ -5,6 +5,9 @@ import ru.link.todoix.Objects.*;
 
 import java.util.List;
 
+/**
+ * Модель возвращаемых данных для списка списков дел
+ */
 @Data
 public class ReviewModel {
     private int finishedListCount = 0;
