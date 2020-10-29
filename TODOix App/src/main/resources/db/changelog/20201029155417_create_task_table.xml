@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="20201029155253_2" author="alexander">
+        <createTable tableName="task">
+
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="task_pkey" nullable="false"/>
+            </column>
+
+            <column name="task_list_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="text">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="priority" type="varchar(7)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="finished" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="create_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="modify_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

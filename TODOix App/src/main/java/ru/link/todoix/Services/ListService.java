@@ -1,10 +1,11 @@
 package ru.link.todoix.Services;
 
 import ru.link.todoix.Objects.ListDTO;
+import ru.link.todoix.PostModels.ReviewPostModel;
 
 import java.util.*;
 
-public interface ListDAOImpl {
+public interface ListService {
 
     void create(ListDTO listDTO);
 
@@ -16,5 +17,5 @@ public interface ListDAOImpl {
 
     List<ListDTO> getAll();
 
-    List<ListDTO> getPage(int page, int size, String sortBy);
+    ReviewPostModel getPage(int p, int size, String sort);
 }

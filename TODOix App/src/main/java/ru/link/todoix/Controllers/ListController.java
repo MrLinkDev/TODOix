@@ -1,14 +1,12 @@
 package ru.link.todoix.Controllers;
 
-import org.hibernate.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import ru.link.todoix.PostModels.*;
 import ru.link.todoix.Repositories.*;
 import ru.link.todoix.Objects.*;
-import ru.link.todoix.Services.ListDAO;
+import ru.link.todoix.Services.*;
 
 import java.util.*;
 
@@ -17,12 +15,12 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/todoix")
-
 public class ListController {
-    private final ListDAO listDAO = new ListDAO();
+    @Autowired
+    private final ListServiceImpl listService = new ListServiceImpl();
 
     @Autowired
-    private CaseRepository caseRepository;
+    private final TaskServiceImpl taskService = new TaskServiceImpl();
 
     /**
      * Создание списка дел
@@ -37,7 +35,7 @@ public class ListController {
         listDTO.setCreateDate(new Date(System.currentTimeMillis()));
         listDTO.setModifyDate(new Date(System.currentTimeMillis()));
 
-        listDAO.create(listDTO);
+        listService.create(listDTO);
     }
 
     /**
@@ -49,7 +47,8 @@ public class ListController {
     @GetMapping(value = "/list/{listId}")
     @ResponseStatus(HttpStatus.OK)
     public ListPostModel getList(@PathVariable("listId") final UUID id){
-        ListPostModel out = new ListPostModel(listDAO.findById(id));
+        ListPostModel out = new ListPostModel(listService.findById(id));
+        out.setTasks(taskService.findByList(listService.findById(id)));
         //TODO: поиск дел по id списка
 
         return out;
@@ -63,11 +62,11 @@ public class ListController {
     @PutMapping(value = "/list/{listId}/modify")
     @ResponseStatus(HttpStatus.OK)
     public void modifyList(@PathVariable("listId") final UUID id, @RequestParam String name){
-        ListDTO listDTO = listDAO.findById(id);
+        ListDTO listDTO = listService.findById(id);
         listDTO.setName(name);
         listDTO.setModifyDate(new Date(System.currentTimeMillis()));
 
-        listDAO.update(listDTO);
+        listService.update(listDTO);
     }
 
     /**
@@ -77,7 +76,7 @@ public class ListController {
     @DeleteMapping(value = "/list/{listId}/delete")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteList(@PathVariable("listId") final UUID id){
-        listDAO.deleteById(id);
+        listService.deleteById(id);
     }
 
     /**
@@ -87,7 +86,7 @@ public class ListController {
     @GetMapping(value = "/list/all")
     @ResponseStatus(HttpStatus.OK)
     public List<ListDTO> getAll(){
-        return listDAO.getAll();
+        return listService.getAll();
     }
 
     /**
@@ -100,28 +99,11 @@ public class ListController {
     @GetMapping(value = "/review")
     @ResponseStatus(HttpStatus.OK)
     public ReviewPostModel getReview(@RequestParam(required = false) Integer p, @RequestParam(required = false) Integer size, @RequestParam(required = false) String sortBy){
-        List<ListDTO> page = listDAO.getPage(p == null ? 0 : p - 1, size == null ? 10 : size > 100 ? 10 : size, sortBy == null ? "name" : sortBy);
-
-        int finishedListCount = 0;
-        int openedListCount = 0;
-
-        for (ListDTO list : page){
-            boolean finished = true;
-            List<CaseEntity> cases = caseRepository.findByListId(list.getId());
-            for (CaseEntity caseItem : cases){
-                if (!caseItem.isFinished()) {
-                    finished = false;
-                    break;
-                }
-            }
-            if (finished) ++finishedListCount;
-            else ++openedListCount;
-        }
-
-        ReviewPostModel review = new ReviewPostModel();
-        review.setLists(page);
-        review.setOpenedListCount(openedListCount);
-        review.setFinishedListCount(finishedListCount);
+        ReviewPostModel review = listService.getPage(
+                p == null ? 0 : p - 1,
+                size == null ? 10 : size > 100 ? 10 : size,
+                sortBy == null ? "name" : sortBy
+        );
 
         return review;
     }
