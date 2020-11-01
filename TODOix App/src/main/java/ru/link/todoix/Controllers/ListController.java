@@ -1,8 +1,11 @@
 package ru.link.todoix.Controllers;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import ru.link.todoix.Exceptions.PageExceptions.*;
+import ru.link.todoix.Exceptions.TaskListExceptions.*;
 import ru.link.todoix.PostModels.*;
 import ru.link.todoix.Objects.*;
 import ru.link.todoix.Services.*;
@@ -27,7 +30,9 @@ public class ListController {
      */
     @PostMapping(value = "/list/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createList(@RequestParam String name){
+    public void createList(@RequestParam String name) throws TaskListEmptyNameException {
+        //if (name.isEmpty()) throw new TaskListEmptyNameException();
+
         ListDTO listDTO = new ListDTO();
         listDTO.setId(UUID.randomUUID());
         listDTO.setName(name);
@@ -45,10 +50,14 @@ public class ListController {
      */
     @GetMapping(value = "/list/{listId}")
     @ResponseStatus(HttpStatus.OK)
-    public ListModel getList(@PathVariable("listId") final UUID id){
-        ListModel out = new ListModel(listService.findById(id));
+    public ListModel getList(@PathVariable("listId") final UUID id) throws TaskListNotFoundException {
+        ListModel out;
+        try {
+            out = new ListModel(listService.findById(id));
+        } catch (NullPointerException e){
+            throw new TaskListNotFoundException();
+        }
         out.setTasks(taskService.findByList(listService.findById(id)));
-        //TODO: поиск дел по id списка
 
         return out;
     }
@@ -60,10 +69,17 @@ public class ListController {
      */
     @PutMapping(value = "/list/{listId}/modify")
     @ResponseStatus(HttpStatus.OK)
-    public void modifyList(@PathVariable("listId") final UUID id, @RequestParam String name){
+    public void modifyList(@PathVariable("listId") final UUID id, @RequestParam String name) throws TaskListEmptyNameException, TaskListNotFoundException{
         ListDTO listDTO = listService.findById(id);
-        listDTO.setName(name);
-        listDTO.setModifyDate(new Date(System.currentTimeMillis()));
+
+        try {
+            if (name.isEmpty()) throw new TaskListEmptyNameException();
+
+            listDTO.setName(name);
+            listDTO.setModifyDate(new Date(System.currentTimeMillis()));
+        } catch (NullPointerException e){
+            throw new TaskListNotFoundException();
+        }
 
         listService.update(listDTO);
     }
@@ -97,13 +113,16 @@ public class ListController {
      */
     @GetMapping(value = "/review")
     @ResponseStatus(HttpStatus.OK)
-    public ReviewModel getReview(@RequestParam(required = false) Integer p, @RequestParam(required = false) Integer size, @RequestParam(required = false) String sortBy){
-        ReviewModel review = listService.getPage(
-                p == null ? 0 : p - 1,
-                size == null ? 10 : size > 100 ? 10 : size,
-                sortBy == null ? "name" : sortBy
-        );
+    public ReviewModel getReview(@RequestParam(defaultValue = "0") Integer p, @RequestParam(defaultValue = "10") Integer size, @RequestParam(defaultValue = "name") String sortBy)
+            throws PageIndexException, PageSizeException, PageSortException {
+        if (p < 0) throw new PageIndexException();
+        if (size < 1) throw new PageSizeException();
+        else if (size > 100) size = 10;
 
-        return review;
+        try{
+            return listService.getPage(p, size, sortBy);
+        } catch (PropertyReferenceException e){
+            throw new PageSortException();
+        }
     }
 }

@@ -1,8 +1,12 @@
 package ru.link.todoix.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.link.todoix.Exceptions.PageExceptions.*;
+import ru.link.todoix.Exceptions.TaskExceptions.TaskNotFoundException;
+import ru.link.todoix.Exceptions.TaskListExceptions.TaskListNotFoundException;
 import ru.link.todoix.Objects.*;
 import ru.link.todoix.Repositories.TaskRepository;
 import ru.link.todoix.Services.*;
@@ -30,10 +34,17 @@ public class TaskController {
      */
     @PostMapping(value = "/task/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTask(@RequestParam UUID listId, @RequestParam String name, @RequestParam String description, @RequestParam String priority){
+    public void createTask(@RequestParam UUID listId, @RequestParam String name, @RequestParam(required = false) String description, @RequestParam String priority)
+            throws TaskListNotFoundException {
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setId(UUID.randomUUID());
-        taskDTO.setListId(listService.findById(listId));
+
+        try {
+            taskDTO.setListId(listService.findById(listId));
+        } catch (NullPointerException e){
+            throw new TaskListNotFoundException();
+        }
+
         taskDTO.setName(name);
         taskDTO.setDescription(description);
         taskDTO.setPriority(Priority.valueOfString(priority));
@@ -51,8 +62,12 @@ public class TaskController {
      */
     @GetMapping(value = "/task/{taskId}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDTO getTask(@PathVariable("taskId") final UUID id){
-        return taskService.findById(id);
+    public TaskDTO getTask(@PathVariable("taskId") final UUID id) throws TaskNotFoundException {
+        try {
+            return taskService.findById(id);
+        } catch (NullPointerException e) {
+            throw new TaskNotFoundException();
+        }
     }
 
     /**
@@ -65,9 +80,14 @@ public class TaskController {
      */
     @PutMapping(value = "/task/{taskId}/modify")
     @ResponseStatus(HttpStatus.OK)
-    public void modifyTask(@PathVariable("taskId") final UUID id, @RequestParam(required = false) String name, @RequestParam(required = false) String description, @RequestParam(required = false) String priority, @RequestParam(required = false) Boolean finished){
-        TaskDTO taskDTO = taskService.findById(id);
-
+    public void modifyTask(@PathVariable("taskId") final UUID id, @RequestParam(required = false) String name, @RequestParam(required = false) String description, @RequestParam(required = false) String priority, @RequestParam(required = false) Boolean finished)
+            throws TaskNotFoundException {
+        TaskDTO taskDTO;
+        try {
+            taskDTO = taskService.findById(id);
+        } catch (NullPointerException e){
+            throw new TaskNotFoundException();
+        }
 
         if (name != null) taskDTO.setName(name);
         if (description != null) taskDTO.setDescription(description);
@@ -84,8 +104,13 @@ public class TaskController {
      */
     @PutMapping(value = "/task/{taskId}/markDown")
     @ResponseStatus(HttpStatus.OK)
-    public void markDownTask(@PathVariable("taskId") final UUID id){
-        TaskDTO taskDTO = taskService.findById(id);
+    public void markDownTask(@PathVariable("taskId") final UUID id) throws TaskNotFoundException {
+        TaskDTO taskDTO;
+        try {
+            taskDTO = taskService.findById(id);
+        } catch (NullPointerException e){
+            throw new TaskNotFoundException();
+        }
         taskDTO.setFinished(true);
 
         taskService.update(taskDTO);
@@ -120,14 +145,17 @@ public class TaskController {
      */
     @GetMapping(value = "/task/review")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskDTO> getReview(@RequestParam(required = false) Integer p, @RequestParam(required = false) Integer size, @RequestParam(required = false) String sortBy){
-        List<TaskDTO> out = taskService.getPage(
-                p == null ? 0 : p - 1,
-                size == null ? 10 : size > 100 ? 10 : size,
-                sortBy == null ? "name" : sortBy
-        );
+    public List<TaskDTO> getReview(@RequestParam(defaultValue = "0") Integer p, @RequestParam(defaultValue = "10") Integer size, @RequestParam(defaultValue = "name") String sortBy)
+            throws PageIndexException, PageSizeException, PageSortException {
+        if (p < 0) throw new PageIndexException();
+        if (size < 1) throw new PageSizeException();
+        else if (size > 100) size = 10;
 
-        return out;
+        try{
+            return taskService.getPage(p, size, sortBy);
+        } catch (PropertyReferenceException e){
+            throw new PageSortException();
+        }
     }
 
 }

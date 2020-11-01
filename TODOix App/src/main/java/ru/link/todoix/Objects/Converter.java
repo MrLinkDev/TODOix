@@ -13,7 +13,6 @@ public class Converter {
      * @return ListDTO - DTO списка дел
      */
     public static ListDTO entityToDTO(ListEntity listEntity){
-        if (listEntity == null) return null;
         ListDTO listDTO = new ListDTO();
         listDTO.setId(listEntity.getListId());
         listDTO.setName(listEntity.getName());
@@ -62,7 +61,6 @@ public class Converter {
      * @return ListDTO - DTO дела
      */
     public static TaskDTO entityToDTO(TaskEntity taskEntity){
-        if (taskEntity == null) return null;
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setId(taskEntity.getId());
         taskDTO.setListId(entityToDTO(taskEntity.getTaskListId()));
