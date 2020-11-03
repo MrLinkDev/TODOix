@@ -8,13 +8,17 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.*;
 
+/**
+ * Java dor на русском для класса и для полей
+ */
 @Entity
 @Table(name = "task", schema = "todoix_app", catalog = "todoix")
-@Data @NoArgsConstructor
+@Data
+@NoArgsConstructor // TODO: зачем? в Java если нет ни одного конструтора то считается что дефолтный есть
 public class TaskEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue // TODO: не нужна нам тут генерация, мы UUID сами раздаём же
     @Column(name = "id")
     private UUID id;
 

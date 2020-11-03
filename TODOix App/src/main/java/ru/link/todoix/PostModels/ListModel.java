@@ -9,7 +9,7 @@ import java.util.*;
  * Модель возвращаемых данных для списка дел
  */
 @Data
-public class ListModel {
+public class ListModel { // TODO: это тоже ДТО, поэтому в конце имени класса тоже лучше сделать приписку Dto
     private UUID id;
 
     private String name;

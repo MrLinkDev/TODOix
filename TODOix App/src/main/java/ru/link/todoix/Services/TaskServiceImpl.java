@@ -42,7 +42,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteById(UUID id) {
-        taskRepository.deleteById(id);
+        taskRepository.deleteById(id); // TODO: а как же броыить not found ???
     }
 
     @Override
