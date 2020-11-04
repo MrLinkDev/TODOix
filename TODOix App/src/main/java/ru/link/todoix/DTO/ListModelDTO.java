@@ -1,7 +1,7 @@
-package ru.link.todoix.PostModels;
+package ru.link.todoix.DTO;
 
 import lombok.Data;
-import ru.link.todoix.Objects.*;
+import ru.link.todoix.DTO.*;
 
 import java.util.*;
 
@@ -9,7 +9,7 @@ import java.util.*;
  * Модель возвращаемых данных для списка дел
  */
 @Data
-public class ListModel { // TODO: это тоже ДТО, поэтому в конце имени класса тоже лучше сделать приписку Dto
+public class ListModelDTO {
     private UUID id;
 
     private String name;
@@ -24,9 +24,10 @@ public class ListModel { // TODO: это тоже ДТО, поэтому в ко
 
     /**
      * Конструктор создания возвращаемой модели
+     *
      * @param listDTO - DTO списка дел
      */
-    public ListModel(ListDTO listDTO){
+    public ListModelDTO(ListDTO listDTO){
         id = listDTO.getId();
         name = listDTO.getName();
         createDate = listDTO.getCreateDate();
@@ -36,6 +37,7 @@ public class ListModel { // TODO: это тоже ДТО, поэтому в ко
     /**
      * Присвоение дел, привязанных к списку дел;
      * подсчёт завершённых и открытых дел
+     *
      * @param tasks - дела, привязанные к списку
      */
     public void setTasks(List<TaskDTO> tasks){

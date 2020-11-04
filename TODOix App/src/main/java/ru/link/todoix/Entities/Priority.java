@@ -1,4 +1,4 @@
-package ru.link.todoix.Objects;
+package ru.link.todoix.Entities;
 
 /**
  * Приоритет дел
@@ -8,6 +8,7 @@ public enum Priority {
 
     /**
      * Преобразование priority типа String в enum
+     *
      * @param priority - приоритет
      * @return Priority
      */

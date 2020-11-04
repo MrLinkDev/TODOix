@@ -1,13 +1,13 @@
 package ru.link.todoix.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.link.todoix.DTO.TaskDTO;
 import ru.link.todoix.Exceptions.PageExceptions.*;
 import ru.link.todoix.Exceptions.TaskExceptions.TaskNotFoundException;
 import ru.link.todoix.Exceptions.TaskListExceptions.TaskListNotFoundException;
-import ru.link.todoix.Objects.*;
+import ru.link.todoix.Entities.*;
 import ru.link.todoix.Services.*;
 
 import java.util.*;
@@ -20,10 +20,7 @@ import java.util.*;
 public class TaskController {
 
     @Autowired
-    private TaskServiceImpl taskService = new TaskServiceImpl();
-
-    @Autowired
-    private ListServiceImpl listService = new ListServiceImpl();
+    private TaskServiceImpl taskService;
 
     /**
      * Создание дела
@@ -36,26 +33,9 @@ public class TaskController {
     @PostMapping(value = "/task/create")
     @ResponseStatus(HttpStatus.CREATED)
     public void createTask(@RequestParam UUID listId, @RequestParam String name, @RequestParam(required = false) String description,
-                           @RequestParam String priority // TODO: что мешает получить приорите сразу как Priority ??? Spring такое даёт
+                           @RequestParam Priority priority
     ) throws TaskListNotFoundException {
-        TaskDTO taskDTO = new TaskDTO();
-        taskDTO.setId(UUID.randomUUID());
-
-        try {
-            taskDTO.setListId(listService.findById(listId));
-        } catch (NullPointerException e) {
-            throw new TaskListNotFoundException(); // TODO: это можно кидать в listService.findById и rest чище будут и там логика видна будет
-        }
-
-        taskDTO.setName(name);
-        taskDTO.setDescription(description);
-        taskDTO.setPriority(Priority.valueOfString(priority));
-        taskDTO.setFinished(false);
-        taskDTO.setCreateDate(new Date(System.currentTimeMillis()));
-        taskDTO.setModifyDate(new Date(System.currentTimeMillis()));
-        // TODO: можно обойтись без ДТО - передать параметрами сразу в taskService.create, либо сразу полить ДТО в параметрах метода
-
-        taskService.create(taskDTO);
+        taskService.create(listId, name, description, priority);
     }
 
     /**
@@ -67,11 +47,7 @@ public class TaskController {
     @GetMapping(value = "/task/{taskId}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDTO getTask(@PathVariable("taskId") final UUID id) throws TaskNotFoundException {
-        try {
-            return taskService.findById(id);
-        } catch (NullPointerException e) {
-            throw new TaskNotFoundException(); // TODO: это можно кидать в taskService.findById и rest чище будут и там логика видна будет
-        }
+        return taskService.findById(id);
     }
 
     /**
@@ -85,23 +61,10 @@ public class TaskController {
      */
     @PutMapping(value = "/task/{taskId}/modify")
     @ResponseStatus(HttpStatus.OK)
-    public void modifyTask(@PathVariable("taskId") final UUID id, @RequestParam(required = false) String name, @RequestParam(required = false) String description, @RequestParam(required = false) String priority, @RequestParam(required = false) Boolean finished)
-            throws TaskNotFoundException {
-        TaskDTO taskDTO;
-        try {
-            taskDTO = taskService.findById(id);
-        } catch (NullPointerException e) {
-            throw new TaskNotFoundException();// TODO: это можно кидать в taskService.findById и rest чище будут и там логика видна будет
-        }
-
-        if (name != null) taskDTO.setName(name);
-        if (description != null) taskDTO.setDescription(description);
-        if (priority != null) taskDTO.setPriority(Priority.valueOfString(priority));
-        if (finished != null) taskDTO.setFinished(finished);
-        taskDTO.setModifyDate(new Date(System.currentTimeMillis()));
-        // TODO: можно обойтись без ДТО - передать параметрами сразу в taskService.create, либо сразу полить ДТО в параметрах метода
-
-        taskService.update(taskDTO);
+    public void modifyTask(@PathVariable("taskId") final UUID id, @RequestParam(required = false) String name, @RequestParam(required = false) String description,
+                           @RequestParam(required = false) Priority priority, @RequestParam(required = false) Boolean finished
+    ) throws TaskNotFoundException {
+        taskService.update(id, name, description, priority, finished);
     }
 
     /**
@@ -112,16 +75,7 @@ public class TaskController {
     @PutMapping(value = "/task/{taskId}/markDown")
     @ResponseStatus(HttpStatus.OK)
     public void markDownTask(@PathVariable("taskId") final UUID id) throws TaskNotFoundException {
-        TaskDTO taskDTO;
-        try {
-            taskDTO = taskService.findById(id);
-        } catch (NullPointerException e) {
-            throw new TaskNotFoundException();// TODO: это можно кидать в taskService.findById и rest чище будут и там логика видна будет
-        }
-        taskDTO.setFinished(true);
-        // TODO: можно обойтись без ДТО - передать параметрами сразу в taskService.update, либо сразу полить ДТО в параметрах метода
-
-        taskService.update(taskDTO);
+        taskService.markDown(id);
     }
 
     /**
@@ -131,7 +85,7 @@ public class TaskController {
      */
     @DeleteMapping(value = "/task/{taskId}/delete")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteTask(@PathVariable("taskId") final UUID id) {
+    public void deleteTask(@PathVariable("taskId") final UUID id) throws TaskNotFoundException{
         taskService.deleteById(id);
     }
 
@@ -158,17 +112,6 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     public List<TaskDTO> getReview(@RequestParam(defaultValue = "0") Integer p, @RequestParam(defaultValue = "10") Integer size, @RequestParam(defaultValue = "name") String sortBy)
             throws PageIndexException, PageSizeException, PageSortException {
-        if (p < 0) throw new PageIndexException();
-        if (size < 1) {
-            throw new PageSizeException();
-        } else if (size > 100) size = 10;
-
-        // TODO: всю логику лучше вынести в метод сервиса, так чище будет
-
-        try {
-            return taskService.getPage(p, size, sortBy);
-        } catch (PropertyReferenceException e) {
-            throw new PageSortException();
-        }
+        return taskService.getPage(p, size, sortBy);
     }
 }

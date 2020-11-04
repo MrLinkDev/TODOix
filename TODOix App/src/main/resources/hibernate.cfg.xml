@@ -13,7 +13,7 @@
         <property name="hibernate.connection.pool_size">100</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
 
-        <mapping class="ru.link.todoix.Objects.ListEntity"/>
-        <mapping class="ru.link.todoix.Objects.CaseEntity"/>
+        <mapping class="ru.link.todoix.Entities.ListEntity"/>
+        <mapping class="ru.link.todoix.Entities.CaseEntity"/>
     </session-factory>
 </hibernate-configuration>

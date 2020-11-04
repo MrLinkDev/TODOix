@@ -3,7 +3,7 @@ package ru.link.todoix.Repositories;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import ru.link.todoix.Objects.*;
+import ru.link.todoix.Entities.*;
 
 import java.util.*;
 
@@ -28,6 +28,7 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
 
     /**
      * Поиск дела по его UUID
+     *
      * @param id - UUID дела
      * @return TaskEntity - сущность дела
      */
@@ -36,6 +37,7 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
 
     /**
      * Поиск дел по UUID списка дел, к которому привязаны дела
+     *
      * @param list - список дел
      * @return List<TaskEntity>
      */
@@ -44,12 +46,13 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
 
     /**
      * Обновление записи о деле по его UUID
-     * @param id - UUID дела
-     * @param name - имя дела
+     *
+     * @param id          - UUID дела
+     * @param name        - имя дела
      * @param description - краткое описание дела
-     * @param priority - срочность дела (1-5)
-     * @param finished - статус дела (завершено или нет)
-     * @param modifyDate - дата изменения дела
+     * @param priority    - срочность дела (1-5)
+     * @param finished    - статус дела (завершено или нет)
+     * @param modifyDate  - дата изменения дела
      */
     @Query(updateQuery)
     @Modifying
@@ -64,7 +67,8 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
 
     /**
      * Присвоение делу статуса завершённого
-     * @param id - UUID дела
+     *
+     * @param id         - UUID дела
      * @param modifyDate - дата изменения записи о деле
      */
     @Query(markDownQuery)
@@ -76,6 +80,7 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
 
     /**
      * Удаление дела по его UUID
+     *
      * @param id - UUID дела
      */
     @Query(deleteQuery)

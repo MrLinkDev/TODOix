@@ -1,7 +1,7 @@
 package ru.link.todoix.Exceptions.TaskExceptions;
 
 import org.springframework.http.HttpStatus;
-import ru.link.todoix.PostModels.ErrorModel;
+import ru.link.todoix.ErrorPostModel;
 
 /**
  * Класс исключения неверного ID дела
@@ -11,9 +11,10 @@ public class TaskNotFoundException extends Exception {
 
     /**
      * Метод для получения ErrorModel исключения
+     *
      * @return ErrorModel
      */
-    public static ErrorModel getErrorModel(){
-        return new ErrorModel(HttpStatus.NOT_FOUND, ERROR_MESSAGE);
+    public static ErrorPostModel getErrorModel(){
+        return new ErrorPostModel(HttpStatus.NOT_FOUND, ERROR_MESSAGE);
     }
 }

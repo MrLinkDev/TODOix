@@ -2,9 +2,12 @@ package ru.link.todoix.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
-import ru.link.todoix.Objects.*;
-import ru.link.todoix.PostModels.ReviewModel;
+import ru.link.todoix.DTO.*;
+import ru.link.todoix.Entities.*;
+import ru.link.todoix.Exceptions.PageExceptions.*;
+import ru.link.todoix.Exceptions.TaskListExceptions.*;
 import ru.link.todoix.Repositories.*;
 
 import java.util.*;
@@ -21,25 +24,57 @@ public class ListServiceImpl implements ListService {
     private TaskRepository taskRepository;
 
     @Override
-    public void create(ListDTO listDTO) {
-        ListEntity listEntity = Converter.DTOToEntity(listDTO);
+    public void create(String listName) {
+        ListEntity listEntity = new ListEntity();
+        listEntity.setName(listName);
+        listEntity.setListId(UUID.randomUUID());
+        listEntity.setCreateDate(new Date(System.currentTimeMillis()));
+        listEntity.setModifyDate(new Date(System.currentTimeMillis()));
         listRepository.save(listEntity);
     }
 
     @Override
-    public ListDTO findById(UUID id) {
+    public ListModelDTO getList(UUID id) throws TaskListNotFoundException {
+        ListModelDTO listModel;
+        try {
+            listModel = new ListModelDTO(Converter.entityToDTO(listRepository.findById(id)));
+        } catch (NullPointerException e){
+            throw new TaskListNotFoundException();
+        }
+
+        List<TaskEntity> tasks = taskRepository.findByList(listRepository.findById(id));
+        listModel.setTasks(Converter.convertListOfTaskEntitiesToDTO(tasks));
+
+        return listModel;
+    }
+
+    @Override
+    public void update(UUID id, String name) throws TaskListNotFoundException, TaskListEmptyNameException {
         ListEntity listEntity = listRepository.findById(id);
 
-        return Converter.entityToDTO(listEntity);
+        try {
+            if (name.isEmpty()) {
+                throw new TaskListEmptyNameException();
+            }
+
+            listEntity.setName(name);
+            listEntity.setModifyDate(new Date(System.currentTimeMillis()));
+        } catch (NullPointerException e){
+            throw new TaskListNotFoundException();
+        }
     }
 
     @Override
-    public void update(ListDTO listDTO) {
-        listRepository.updateById(listDTO.getId(), listDTO.getName(), listDTO.getModifyDate());
-    }
+    public void deleteById(UUID id) throws TaskListNotFoundException{
+        if (listRepository.findById(id) == null) {
+            throw new TaskListNotFoundException();
+        }
 
-    @Override
-    public void deleteById(UUID id) {
+        List<TaskEntity> tasks = taskRepository.findByList(listRepository.findById(id));
+        for (TaskEntity task : tasks){
+            taskRepository.deleteById(task.getId());
+        }
+
         listRepository.deleteById(id);
     }
 
@@ -50,9 +85,26 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
-    public ReviewModel getPage(int p, int size, String sort) {
+    public ReviewModelDTO getPage(int p, int size, String sort) throws PageIndexException, PageSizeException, PageSortException {
+        if (p < 0) {
+            throw new PageIndexException();
+        }
+        if (size < 1) {
+            throw new PageSizeException();
+        }
+        if (size > 100) {
+            size = 10;
+        }
+
         Pageable pageable = PageRequest.of(p, size, Sort.by(sort));
-        Page<ListEntity> page = listRepository.findAll(pageable);
+        Page<ListEntity> page;
+
+        try{
+            page = listRepository.findAll(pageable);
+        } catch (PropertyReferenceException e){
+            throw new PageSortException();
+        }
+
 
         int finishedListCount = 0;
         int openedListCount = 0;
@@ -67,11 +119,14 @@ public class ListServiceImpl implements ListService {
                 }
             }
 
-            if (finished) ++finishedListCount;
-            else ++openedListCount;
+            if (finished) {
+                ++finishedListCount;
+            } else {
+                ++openedListCount;
+            }
         }
 
-        ReviewModel review = new ReviewModel();
+        ReviewModelDTO review = new ReviewModelDTO();
         review.setLists(Converter.convertListOfListEntitiesToDTO(page.getContent()));
         review.setOpenedListCount(openedListCount);
         review.setFinishedListCount(finishedListCount);

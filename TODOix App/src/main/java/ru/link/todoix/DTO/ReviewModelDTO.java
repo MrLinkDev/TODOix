@@ -1,7 +1,7 @@
-package ru.link.todoix.PostModels;
+package ru.link.todoix.DTO;
 
 import lombok.Data;
-import ru.link.todoix.Objects.*;
+import ru.link.todoix.DTO.ListDTO;
 
 import java.util.List;
 
@@ -9,8 +9,7 @@ import java.util.List;
  * Модель возвращаемых данных для списка списков дел
  */
 @Data
-public class ReviewModel { // TODO: это ДТО, поэтому лучше приписать в конце Dto,
-    // чтоб по имени класса было понятно зачем он
+public class ReviewModelDTO {
     private int finishedListCount = 0;
     private int openedListCount = 0;
 

@@ -17,8 +17,8 @@ public class Application {
     }
 
     /**
-     * Генерация документации API. После запуска приложения
-     * будет располагаться по адресу: http://localhost:8080/swagger-ui.html
+     * Генерация документации API (http://localhost:8080/swagger-ui.html)
+     *
      * @return Docket
      */
     @Bean

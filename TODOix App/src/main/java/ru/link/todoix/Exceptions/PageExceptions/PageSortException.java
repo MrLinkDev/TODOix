@@ -1,7 +1,7 @@
 package ru.link.todoix.Exceptions.PageExceptions;
 
 import org.springframework.http.HttpStatus;
-import ru.link.todoix.PostModels.ErrorModel;
+import ru.link.todoix.ErrorPostModel;
 
 /**
  * Класс исключения неверного параметра сортировки элементов страницы
@@ -11,9 +11,10 @@ public class PageSortException extends Exception{
 
     /**
      * Метод для получения ErrorModel исключения
+     *
      * @return ErrorModel
      */
-    public static ErrorModel getErrorModel(){
-        return new ErrorModel(HttpStatus.BAD_REQUEST, ERROR_MESSAGE);
+    public static ErrorPostModel getErrorModel(){
+        return new ErrorPostModel(HttpStatus.BAD_REQUEST, ERROR_MESSAGE);
     }
 }

@@ -1,4 +1,4 @@
-package ru.link.todoix.Objects;
+package ru.link.todoix.DTO;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import java.util.*;
  * DTO списка дел
  */
 @Data
-public class ListDTO {  // TODO: все DTO лучше вынеси  вотдельный пакет (каталог)
+public class ListDTO {
 
     private UUID id;
 

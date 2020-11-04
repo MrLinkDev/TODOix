@@ -1,4 +1,6 @@
-package ru.link.todoix.Objects;
+package ru.link.todoix.Entities;
+
+import ru.link.todoix.DTO.*;
 
 import java.util.*;
 
@@ -9,6 +11,7 @@ public class Converter {
 
     /**
      * Конвертация ListEntity в ListDTO
+     *
      * @param listEntity - сущность списка дел
      * @return ListDTO - DTO списка дел
      */
@@ -23,6 +26,7 @@ public class Converter {
 
     /**
      * Конвертация ListDTO в ListEntity
+     *
      * @param listDTO - DTO списка дел
      * @return ListEntity - сущность списка дел
      */
@@ -37,6 +41,7 @@ public class Converter {
 
     /**
      * Конвертация списка ListEntity в список ListDTO
+     *
      * @param list - список сущностей списка дел
      * @return List<ListDTO> - список DTO списка дел
      */
@@ -57,6 +62,7 @@ public class Converter {
 
     /**
      * Конвертация TaskEntity в TaskDTO
+     *
      * @param taskEntity - сущность дела
      * @return ListDTO - DTO дела
      */
@@ -75,6 +81,7 @@ public class Converter {
 
     /**
      * Конвертация TaskDTO в TaskEntity
+     *
      * @param taskDTO - DTO дела
      * @return TaskEntity - сущность дела
      */
@@ -93,6 +100,7 @@ public class Converter {
 
     /**
      * Конвертация списка TaskEntity в список TaskDTO
+     *
      * @param entityList - список сущностей дел
      * @return List<TaskDTO> - список DTO дел
      */

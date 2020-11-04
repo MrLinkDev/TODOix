@@ -1,7 +1,8 @@
 package ru.link.todoix.Services;
 
-import ru.link.todoix.Objects.ListDTO;
-import ru.link.todoix.PostModels.ReviewModel;
+import ru.link.todoix.DTO.*;
+import ru.link.todoix.Exceptions.PageExceptions.*;
+import ru.link.todoix.Exceptions.TaskListExceptions.*;
 
 import java.util.*;
 
@@ -12,41 +13,48 @@ public interface ListService {
 
     /**
      * Создание списка дел
-     * @param listDTO - DTO списка дел
+     *
+     * @param listName - имя списка дел
      */
-    void create(ListDTO listDTO);
+    void create(String listName);
 
     /**
      * Поиск списка дел по UUID
+     *
      * @param id - UUID списка дел
-     * @return ListDTO - DTO списка дел
+     * @return ListModelDTO - DTO списка дел, в котором находятся дела, привязанные к данному списку дел
      */
-    ListDTO findById(UUID id);
+    ListModelDTO getList(UUID id) throws TaskListNotFoundException;
 
     /**
      * Обновление записи списка дел
-     * @param listDTO - DTO списка дел
+     *
+     * @param id   - UUID списка дел
+     * @param name - новое имя списка дел
      */
-    void update(ListDTO listDTO);
+    void update(UUID id, String name) throws TaskListNotFoundException, TaskListEmptyNameException;
 
     /**
-     * Удаление записи о списке дел
+     * Удаление записи о списке дел и всех привязанных к нему дел
+     *
      * @param id - UUID списка дел
      */
-    void deleteById(UUID id);
+    void deleteById(UUID id) throws TaskListNotFoundException;
 
     /**
      * Получение всех списков дел
+     *
      * @return List<ListDTO>
      */
     List<ListDTO> getAll();
 
     /**
      * Получение списков дел с сортировкой и пагинацией
-     * @param p - номер страницы
+     *
+     * @param p    - номер страницы
      * @param size - размер страницы (количество элементов на ней)
      * @param sort - параметр, по которому будет произведена сортировка
      * @return ReviewModel
      */
-    ReviewModel getPage(int p, int size, String sort);
+    ReviewModelDTO getPage(int p, int size, String sort) throws PageIndexException, PageSizeException, PageSortException;
 }

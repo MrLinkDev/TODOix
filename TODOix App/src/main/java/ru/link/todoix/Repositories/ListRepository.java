@@ -3,7 +3,7 @@ package ru.link.todoix.Repositories;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import ru.link.todoix.Objects.ListEntity;
+import ru.link.todoix.Entities.ListEntity;
 
 import java.util.*;
 
@@ -17,6 +17,7 @@ public interface ListRepository extends JpaRepository<ListEntity, Long> {
 
     /**
      * Поиск списка дел по его UUID
+     *
      * @param id - UUID списка дел
      * @return ListEntity - сущность списка дел
      */
@@ -25,8 +26,9 @@ public interface ListRepository extends JpaRepository<ListEntity, Long> {
 
     /**
      * Обновление записи о списке дел по его UUID
-     * @param id - UUID списка дел
-     * @param name - новое имя списка дел
+     *
+     * @param id         - UUID списка дел
+     * @param name       - новое имя списка дел
      * @param modifyDate - дата изменения списка дел
      */
     @Query(updateQuery)
@@ -36,6 +38,7 @@ public interface ListRepository extends JpaRepository<ListEntity, Long> {
 
     /**
      * Удаление записи о списке дел по его UUID
+     *
      * @param id - UUID списка дел
      */
     @Query(deleteQuery)
