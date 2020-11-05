@@ -1,8 +1,7 @@
 package ru.link.todoix.DTO;
 
 import lombok.Data;
-import ru.link.todoix.DTO.ListDTO;
-import ru.link.todoix.Entities.Priority;
+import ru.link.todoix.Enums.Priority;
 
 import java.util.*;
 

@@ -1,6 +1,7 @@
-package ru.link.todoix.Entities;
+package ru.link.todoix;
 
 import ru.link.todoix.DTO.*;
+import ru.link.todoix.Entities.*;
 
 import java.util.*;
 

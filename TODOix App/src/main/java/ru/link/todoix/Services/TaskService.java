@@ -1,7 +1,7 @@
 package ru.link.todoix.Services;
 
 import ru.link.todoix.DTO.*;
-import ru.link.todoix.Entities.Priority;
+import ru.link.todoix.Enums.Priority;
 import ru.link.todoix.Exceptions.PageExceptions.*;
 import ru.link.todoix.Exceptions.TaskExceptions.TaskNotFoundException;
 import ru.link.todoix.Exceptions.TaskListExceptions.TaskListNotFoundException;

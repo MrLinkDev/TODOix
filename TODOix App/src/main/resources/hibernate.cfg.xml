@@ -14,6 +14,7 @@
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
 
         <mapping class="ru.link.todoix.Entities.ListEntity"/>
-        <mapping class="ru.link.todoix.Entities.CaseEntity"/>
+        <mapping class="ru.link.todoix.Entities.TaskEntity"/>
+        <mapping class="ru.link.todoix.Entities.UserEntity"/>
     </session-factory>
 </hibernate-configuration>

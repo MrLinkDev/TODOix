@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ru.link.todoix.Entities.*;
+import ru.link.todoix.Enums.Priority;
 
 import java.util.*;
 

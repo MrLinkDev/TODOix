@@ -7,5 +7,8 @@
 
     <include file="db/changelog/20201029155253_create_task_list_table.xml"/>
     <include file="db/changelog/20201029155417_create_task_table.xml"/>
+    <include file="db/changelog/20201105124928_create_user_table.xml"/>
+    <include file="db/changelog/20201105130001_modify_task_list_table.xml"/>
+    <include file="db/changelog/20201105130243_clear_task_table.xml"/>
 
 </databaseChangeLog>

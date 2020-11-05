@@ -7,7 +7,7 @@ import ru.link.todoix.DTO.TaskDTO;
 import ru.link.todoix.Exceptions.PageExceptions.*;
 import ru.link.todoix.Exceptions.TaskExceptions.TaskNotFoundException;
 import ru.link.todoix.Exceptions.TaskListExceptions.TaskListNotFoundException;
-import ru.link.todoix.Entities.*;
+import ru.link.todoix.Enums.Priority;
 import ru.link.todoix.Services.*;
 
 import java.util.*;

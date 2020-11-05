@@ -2,6 +2,7 @@ package ru.link.todoix.Entities;
 
 import lombok.*;
 import org.hibernate.annotations.*;
+import ru.link.todoix.Enums.Priority;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
